@@ -5,8 +5,11 @@ import { ContainerBox } from "./component/ContainerBox";
 import logo from "../assets/logo.png";
 import { useContainer } from "../hooks/useContainer";
 import { useEffect, useState } from "react";
+import { useResult } from "../hooks/useResult";
 
 export const CalculatorScreen = () => {
+
+  const {state:{boxes}} = useResult();  
   const {state:{type,measure,width,heigth,long,weigthMax},changeContainerDry20FT,changeContainerDry40FT,changeContainerDry40HQ,changeContainerReffer20FT,changeContainerReffer40FT,changeContainerReffer40HQ}=useContainer();
   const [typeContainer,setTypeContainer]= useState("DRY");
   const[measureContainer, setMeasureContainer]= useState("20FT");
@@ -147,7 +150,7 @@ export const CalculatorScreen = () => {
                 <p style={{ fontSize: "15px", color: "white" }}>{"Peso Max: "+weigthMax}</p>
               </div>
               <div className=" d-flex flex-column col-5 justify-content-around border rounded-lg px-4 py-2 bg-white shadow-sm">
-                <p style={{ fontSize: "15px", color: "#6f85d9" }}>Cajas: </p>
+                <p style={{ fontSize: "15px", color: "#6f85d9" }}>{"Cajas: "+boxes.toFixed(2)}</p>
                 <p style={{ fontSize: "15px", color: "#6f85d9" }}>Unidades:</p>
                 <p style={{ fontSize: "15px", color: "#6f85d9" }}>
                   Peso Bruto:

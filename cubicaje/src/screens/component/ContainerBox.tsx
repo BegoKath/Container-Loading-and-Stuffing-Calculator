@@ -25,7 +25,6 @@ export const ContainerBox = () => {
   },[resultUniqueBox, values])
 
   return (
-    <div className="d-flex align-items-center border rounded-lg px-4 py-2 bg-white shadow-sm">
       <Row>
         <Col md style={{ display: "flex", justifyContent: "center" }}>
           <img
@@ -106,6 +105,5 @@ export const ContainerBox = () => {
           </div>
         </Col>
       </Row>
-    </div>
   );
 };

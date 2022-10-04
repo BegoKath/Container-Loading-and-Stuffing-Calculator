@@ -50,7 +50,7 @@ export const useContainer = () => {
     dispatch(containerActions.setMeasure("40FT"));
     dispatch(containerActions.setWidth(2225));
     dispatch(containerActions.setHeigth(2169));
-    dispatch(containerActions.setLong(1005));
+    dispatch(containerActions.setLong(10050));
     dispatch(containerActions.setWeigthMax(27700));
     volumenContainer();
   };

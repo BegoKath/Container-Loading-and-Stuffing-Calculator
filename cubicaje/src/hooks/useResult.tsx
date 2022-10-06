@@ -11,11 +11,14 @@ export const useResult = () =>{
     const dispatch = useDispatch();   
     const volumenContainer = ()=> dispatch(resultThunks.volumenContainer())
     const resultUniqueBox =(values:IBox)=>dispatch(resultThunks.resultUniqueBox(values));
+    const addBoxItem =(values:IBox)=>dispatch(resultThunks.addBoxItem(state.boxes,values));
     const showWindowGold = (gold:boolean)=> dispatch(resultActions.setGold(gold));
+  
     return{
         state,
         resultUniqueBox,
         volumenContainer,
-        showWindowGold
+        showWindowGold,addBoxItem,
+        
     }
 }

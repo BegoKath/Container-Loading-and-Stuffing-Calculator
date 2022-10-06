@@ -1,7 +1,10 @@
 export interface IBox{
+    id:number,
     width: number,
     height:number,
     long:number,
     weigth:number,
-    quantity:number
+    quantity:number,
+    update:boolean,
+    
 }

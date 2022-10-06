@@ -9,7 +9,7 @@ import { ContainerBoxes } from "./component/ContainerBoxes";
 
 export const CalculatorScreen = () => {
   const {
-    state: { numboxes, units,weightMax, isGold },
+    state: { numboxes, units,weightMax, isGold ,boxes},
     showWindowGold,
   } = useResult();
   const {
@@ -61,7 +61,8 @@ export const CalculatorScreen = () => {
   }, [showWindowGold]);
   useEffect(() => {
     changeContainer();
-  }, [typeContainer, measureContainer, changeContainer]);
+    console.log(boxes);
+  }, [typeContainer, measureContainer, changeContainer, boxes]);
   return (
     <div className="d-flex align-items-center justify-content-center m-4">
       <Container style={page}>
@@ -171,7 +172,7 @@ export const CalculatorScreen = () => {
               </div>
             </div>
           </Col>
-          <Col md style={{ minHeight: "650px", paddingTop: "20px" }}>
+          <Col md style={{ minHeight: "650px", paddingTop: "10px" }}>
             <div className="d-flex mb-2">
               <div className=" d-flex flex-column col-6 justify-content-end align-items-end">
                 <p style={{ fontSize: "25px" }}>Carga</p>

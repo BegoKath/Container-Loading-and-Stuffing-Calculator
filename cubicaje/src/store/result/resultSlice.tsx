@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IBox } from "../../interfaces/Ibox";
 
 export interface IResultState {
-  boxes?: IBox[];
+  boxes: IBox[];
   numboxes: number;
   units: number;
   weightMax: number;
@@ -10,6 +10,13 @@ export interface IResultState {
   isGold:boolean;
 }
 export const defaultState: IResultState = {
+  boxes:[{ id:0,
+    width:0,
+    height:0,
+    long:0,
+    quantity:0,
+    weigth:0,
+    update:false}],
   numboxes: 0,
   units: 0,
   weightMax: 0,

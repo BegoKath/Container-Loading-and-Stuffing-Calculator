@@ -1,13 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IBox } from "../../interfaces/Ibox";
+import {IResult} from "../../interfaces/IResult";
 
 export interface IResultState {
   boxes: IBox[];
-  numboxes: number;
-  units: number;
-  weightMax: number;
+  numStep:number;
   volumenContainer:number;
   isGold:boolean;
+}
+const result:IResult={
+  numboxes:0,
+  weightMax:0,
+  units:0,
+  volumen:0,
+  percent:0
 }
 export const defaultState: IResultState = {
   boxes:[{ id:0,
@@ -16,11 +22,10 @@ export const defaultState: IResultState = {
     long:0,
     quantity:0,
     weigth:0,
-    update:false}],
-  numboxes: 0,
-  units: 0,
-  weightMax: 0,
+    update:false,
+    result:result}],
   volumenContainer:0,
+  numStep:0,
   isGold:false,
 };
 const initialState: IResultState = defaultState;
@@ -32,17 +37,11 @@ export const resultSlice = createSlice({
     setBoxes: (state, action: PayloadAction<IBox[]>) => {
       state.boxes = action.payload;
     },
-    setNumBoxes: (state, action: PayloadAction<number>) => {
-      state.numboxes = action.payload;
-    },
-    setUnits: (state, action: PayloadAction<number>) => {
-      state.units = action.payload;
-    },
-    setWeightMax: (state, action: PayloadAction<number>) => {
-      state.weightMax = action.payload;
-    },
     setVolumenContainer: (state, action: PayloadAction<number>) => {
       state.volumenContainer = action.payload;
+    },
+    setNumStep: (state, action: PayloadAction<number>) => {
+      state.numStep = action.payload;
     },
     setGold: (state, action: PayloadAction<boolean>) => {
       state.isGold = action.payload;

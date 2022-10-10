@@ -1,11 +1,14 @@
 import { InputAdornment, TextField } from "@mui/material";
 import { ChangeEvent, useState } from "react";
-import { Button, } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useResult } from "../../hooks/useResult";
 import { IBox } from "../../interfaces/Ibox";
 
 export const ContainerBox = (boxItem: IBox) => {
-  const { state:{isGold},addBoxItem } = useResult();
+  const {
+    state: { isGold },
+    resultMultiplesBoxes,
+  } = useResult();
   const [values, setValues] = useState<IBox>({
     id: boxItem.id,
     width: boxItem.width,
@@ -13,7 +16,8 @@ export const ContainerBox = (boxItem: IBox) => {
     long: boxItem.long,
     quantity: boxItem.quantity,
     weigth: boxItem.weigth,
-    update:boxItem.update
+    update: boxItem.update,
+    result: boxItem.result,
   });
   const { resultUniqueBox } = useResult();
   const handleChange =
@@ -29,8 +33,12 @@ export const ContainerBox = (boxItem: IBox) => {
       values.quantity !== 0
     ) {
       
-      resultUniqueBox(values);
-      addBoxItem(values);
+      if (isGold) {
+        const update=values.update;
+        resultMultiplesBoxes(values,update);
+      }else{
+        resultUniqueBox(values);
+      }
     } else {
       console.log("falta items");
     }
@@ -42,7 +50,7 @@ export const ContainerBox = (boxItem: IBox) => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        paddingTop:"10px"
+        paddingTop: "10px",
       }}
     >
       <TextField
@@ -95,7 +103,6 @@ export const ContainerBox = (boxItem: IBox) => {
           endAdornment: <InputAdornment position="end">kg.</InputAdornment>,
         }}
       />
-
       <TextField
         value={values.quantity}
         onChange={handleChange("quantity")}
@@ -109,8 +116,12 @@ export const ContainerBox = (boxItem: IBox) => {
         }}
       />
       <Button onClick={calcule} style={{ marginBottom: "20px " }}>
-           {isGold?"Agregar Carga":"Calcular"} 
-          </Button>
+        {isGold
+          ? values.update
+            ? "Cambiar Carga"
+            : "Agregar Carga"
+          : "Calcular"}
+      </Button>
     </div>
   );
 };

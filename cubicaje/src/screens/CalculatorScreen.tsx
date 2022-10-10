@@ -6,10 +6,11 @@ import { useContainer } from "../hooks/useContainer";
 import { useEffect, useState } from "react";
 import { useResult } from "../hooks/useResult";
 import { ContainerBoxes } from "./component/ContainerBoxes";
+import { IBox } from "../interfaces/Ibox";
 
 export const CalculatorScreen = () => {
   const {
-    state: { numboxes, units,weightMax, isGold ,boxes},
+    state: { isGold, boxes },
     showWindowGold,
   } = useResult();
   const {
@@ -63,11 +64,34 @@ export const CalculatorScreen = () => {
     changeContainer();
     console.log(boxes);
   }, [typeContainer, measureContainer, changeContainer, boxes]);
+  const results = boxes.map((e: IBox) => {
+    return (
+      <div
+        className={
+          " d-flex flex-column " +
+          (isGold ? "col-5 " : "col-12 ") +
+          "justify-content-around border rounded-lg px-4 py-2 bg-white shadow-sm mx-1"
+        }
+        style={{ width: "200px" }}
+        key={e.id}
+      >
+        <p style={{ fontSize: "15px", color: "#6f85d9" }}>
+          {"Cajas: " + e.result.numboxes}
+        </p>
+        <p style={{ fontSize: "15px", color: "#6f85d9" }}>
+          {"Unidades: " + e.result.units}
+        </p>
+        <p style={{ fontSize: "15px", color: "#6f85d9" }}>
+          {"Peso Bruto: " + e.result.weightMax.toFixed(2) + " Kg"}
+        </p>
+      </div>
+    );
+  });
   return (
-    <div className="d-flex align-items-center justify-content-center m-4">
+    <div className="d-flex align-items-center justify-content-center m-3">
       <Container style={page}>
         <Row>
-          <Col md style={cont1}>
+          <Col md className="col-md-6" style={cont1}>
             <Row
               className="text-center text-white"
               style={{ fontSize: "20px" }}
@@ -87,13 +111,14 @@ export const CalculatorScreen = () => {
               >
                 Tipos de Contenedor
               </Row>
-              <div style={contOp}>
-                <div className="d-flex flex-column">
+              <div  className="row" style={contOp}>
+                <div className="col-sm-4 text-center">
                   <img
                     src={container1}
                     alt="Container"
                     width={"145px"}
-                    height={"80px"}
+                    className="img-fluid img-thumbnail"
+                    style={{backgroundColor:"transparent", border:"0px solid"}}
                   />
                   <input
                     type="radio"
@@ -110,12 +135,13 @@ export const CalculatorScreen = () => {
                     Contenedor Seco o Dry
                   </p>
                 </div>
-                <div className="d-flex flex-column">
+                <div className="col-sm-4 text-center">
                   <img
                     src={container2}
                     alt="Container"
                     width={"145px"}
-                    height={"80px"}
+                    className="img-fluid img-thumbnail"
+                    style={{backgroundColor:"transparent", border:"0px solid"}}
                   />
                   <input
                     type="radio"
@@ -172,29 +198,35 @@ export const CalculatorScreen = () => {
               </div>
             </div>
           </Col>
-          <Col md style={{ minHeight: "650px", paddingTop: "10px" }}>
-            <div className="d-flex mb-2">
-              <div className=" d-flex flex-column col-6 justify-content-end align-items-end">
-                <p style={{ fontSize: "25px" }}>Carga</p>
-              </div>
-              <div className=" d-flex flex-column col-6 justify-content-end align-items-end">
-                <img src={logo} alt="logo" height={"80px"} />
-              </div>
+          <Col
+            md
+            className="col-md-6"
+            style={{ minHeight: "650px", paddingTop: "10px" }}
+          >
+            <div className=" d-flex justify-content-center align-items-center">
+              <p style={{ fontSize: "20px" }}>Carga</p>
             </div>
-             <ContainerBoxes />
-            <p style={{ fontSize: "25px", marginTop: "10px" }}> Resultados</p>
+            {/* <div className=" d-flex flex-column col-6 justify-content-end align-items-end">
+                <img src={logo} alt="logo" height={"60px"} />
+                </div>*/}
+            <ContainerBoxes />
+            <p style={{ fontSize: "20px", marginTop: "10px", height: "20px" }}>
+              Resultados
+            </p>
             <div
               className="d-flex mb-2"
               style={{
                 flexDirection: isGold ? "column" : "row",
                 justifyContent: isGold ? "center" : "space-around",
                 alignItems: isGold ? "center" : "space-around",
-                
               }}
             >
               <div
                 className=" d-flex flex-column col-5 justify-content-center border rounded  px-2 py-2  shadow-sm mb-1"
-                style={{ backgroundColor: "#6f85d9",width: isGold ? "100%" : "" }}
+                style={{
+                  backgroundColor: "#6f85d9",
+                  width: isGold ? "100%" : "",
+                }}
               >
                 <p
                   style={{
@@ -214,30 +246,26 @@ export const CalculatorScreen = () => {
                 >
                   <div className="d-flex flex-column">
                     <p style={{ fontSize: "15px", color: "white" }}>
-                      {"Largo: " + long+" mm"}
+                      {"Largo: " + long + " mm"}
                     </p>
                     <p style={{ fontSize: "15px", color: "white" }}>
-                      {"Ancho: " + width+" mm"}
+                      {"Ancho: " + width + " mm"}
                     </p>
                   </div>
                   <div className="d-flex flex-column">
                     <p style={{ fontSize: "15px", color: "white" }}>
-                      {"Alto: " + heigth+" mm"}
+                      {"Alto: " + heigth + " mm"}
                     </p>
                     <p style={{ fontSize: "15px", color: "white" }}>
-                      {"Peso Max: " + weigthMax+" Kg"}
+                      {"Peso Max: " + weigthMax + " Kg"}
                     </p>
                   </div>
                 </div>
               </div>
-              <div className=" d-flex flex-column col-5 justify-content-around border rounded-lg px-4 py-2 bg-white shadow-sm">
-                <p style={{ fontSize: "15px", color: "#6f85d9" }}>
-                  {"Cajas: " + numboxes}
-                </p>
-                <p style={{ fontSize: "15px", color: "#6f85d9" }}>{"Unidades: "+units}</p>
-                <p style={{ fontSize: "15px", color: "#6f85d9" }}>
-                  {"Peso Bruto: "+weightMax.toFixed(2)+" Kg"}
-                </p>
+              <div className="container-fluid">
+                <div className="row flex-nowrap justify-content-center" style={scrollh}>
+                  {results}
+                </div>
               </div>
             </div>
           </Col>
@@ -264,7 +292,9 @@ const contOp: React.CSSProperties = {
   backgroundColor: "#6f85d9",
   padding: "10px",
   borderRadius: "10px",
-  display: "flex",
-  justifyContent: "space-around",
   width: "90%",
+  justifyContent:"center"
+};
+const scrollh: React.CSSProperties = {
+  overflow: "auto",
 };

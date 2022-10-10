@@ -40,3 +40,28 @@ html, body{
     transform: rotate(360deg);
   }
 }
+.horizontal-scrollable > .row {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.horizontal-scrollable > .row > .col-xs-4 {
+  display: inline-block;
+  float: none;
+}
+/* Decorations */
+
+.col-xs-4 {
+  color: white;
+  font-size: 24px;
+  padding-bottom: 20px;
+  padding-top: 18px;
+}
+
+.col-xs-4:nth-child(2n+1) {
+  background: green;
+}
+
+.col-xs-4:nth-child(2n+2) {
+  background: black;
+}

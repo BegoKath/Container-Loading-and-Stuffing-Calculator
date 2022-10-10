@@ -10,15 +10,15 @@ export const useResult = () =>{
     const state= useSelector((state:any) => state.result) as IResultState;    
     const dispatch = useDispatch();   
     const volumenContainer = ()=> dispatch(resultThunks.volumenContainer())
-    const resultUniqueBox =(values:IBox)=>dispatch(resultThunks.resultUniqueBox(values));
-    const addBoxItem =(values:IBox)=>dispatch(resultThunks.addBoxItem(state.boxes,values));
+    const resultUniqueBox =(values:IBox)=>dispatch(resultThunks.resultUniqueBox(values,state.boxes));
+    const resultMultiplesBoxes =(values:IBox,update:boolean)=>dispatch(resultThunks.resultMultiplesBoxes(state.boxes,values,update));
     const showWindowGold = (gold:boolean)=> dispatch(resultActions.setGold(gold));
   
     return{
         state,
         resultUniqueBox,
         volumenContainer,
-        showWindowGold,addBoxItem,
+        showWindowGold,resultMultiplesBoxes,
         
     }
 }

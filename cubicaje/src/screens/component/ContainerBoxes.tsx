@@ -5,7 +5,7 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useResult } from "../../hooks/useResult";
 import { IBox } from "../../interfaces/Ibox";
 import { ContainerBox } from "./ContainerBox";
@@ -43,9 +43,9 @@ function TabPanel(props: TabPanelProps) {
 export const ContainerBoxes = () => {
   const theme = useTheme();
   const {
-    state: { isGold, boxes },
+    state: { isGold, boxes,numStep },
   } = useResult();
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(numStep);
   const maxSteps = boxes.length;
 
   const handleNext = () => {
@@ -55,6 +55,7 @@ export const ContainerBoxes = () => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+
   const renderItems = (item: IBox) => {
     return (
       <TabPanel index={item.id} value={activeStep} key={item.id}>
@@ -62,6 +63,9 @@ export const ContainerBoxes = () => {
       </TabPanel>
     );
   };
+  useEffect(()=>{
+    setActiveStep(numStep)
+  },[numStep])
   return (
     <div className="d-flex  align-items-center border rounded-lg  bg-white shadow-sm">
       <Col

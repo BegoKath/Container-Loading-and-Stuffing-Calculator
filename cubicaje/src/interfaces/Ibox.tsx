@@ -1,3 +1,5 @@
+import { IResult } from "./IResult";
+
 export interface IBox{
     id:number,
     width: number,
@@ -6,5 +8,5 @@ export interface IBox{
     weigth:number,
     quantity:number,
     update:boolean,
-    
+    result:IResult    
 }

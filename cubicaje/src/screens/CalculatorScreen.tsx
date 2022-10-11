@@ -90,13 +90,13 @@ export const CalculatorScreen = () => {
         style={{ width: "200px" }}
         key={e.id}
       >
-        <p style={{ fontSize: "15px", color: "#6f85d9" }}>
+        <p style={{ fontSize: "13px", color: "#6f85d9" }}>
           {"Cajas: " + e.result.numboxes}
         </p>
-        <p style={{ fontSize: "15px", color: "#6f85d9" }}>
+        <p style={{ fontSize: "13px", color: "#6f85d9" }}>
           {"Unidades: " + e.result.units}
         </p>
-        <p style={{ fontSize: "15px", color: "#6f85d9" }}>
+        <p style={{ fontSize: "13px", color: "#6f85d9" }}>
           {"Peso Bruto: " + e.result.weightMax.toFixed(2) + " Kg"}
         </p>
       </div>

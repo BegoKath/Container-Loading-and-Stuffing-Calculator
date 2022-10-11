@@ -115,7 +115,7 @@ export const ContainerBox = (boxItem: IBox) => {
           endAdornment: <InputAdornment position="end">uni</InputAdornment>,
         }}
       />
-      <Button onClick={calcule} style={{ marginBottom: "20px " }}>
+      <Button onClick={calcule} style={{ marginBottom: "20px ",background: "#6f85d9" }}>
         {isGold
           ? values.update
             ? "Cambiar Carga"

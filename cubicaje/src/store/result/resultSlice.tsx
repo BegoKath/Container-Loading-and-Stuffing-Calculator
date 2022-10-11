@@ -7,6 +7,7 @@ export interface IResultState {
   numStep:number;
   volumenContainer:number;
   isGold:boolean;
+  isTransport:boolean;
 }
 const result:IResult={
   numboxes:0,
@@ -27,6 +28,7 @@ export const defaultState: IResultState = {
   volumenContainer:0,
   numStep:0,
   isGold:false,
+  isTransport:false
 };
 const initialState: IResultState = defaultState;
 
@@ -45,6 +47,9 @@ export const resultSlice = createSlice({
     },
     setGold: (state, action: PayloadAction<boolean>) => {
       state.isGold = action.payload;
+    },
+    setTransport: (state, action: PayloadAction<boolean>) => {
+      state.isTransport = action.payload;
     },
     resetStateToDefault: () => {
       return defaultState;

@@ -1,17 +1,19 @@
 import { Col, Container, Row } from "react-bootstrap";
 import container1 from "../assets/container1.png";
 import container2 from "../assets/container2.png";
+import transport from "../assets/transport.png";
 import logo from "../assets/logo.png";
 import { useContainer } from "../hooks/useContainer";
 import { useEffect, useState } from "react";
 import { useResult } from "../hooks/useResult";
 import { ContainerBoxes } from "./component/ContainerBoxes";
 import { IBox } from "../interfaces/Ibox";
+import { ContainerTransport } from "./component/ContainerTransport";
 
 export const CalculatorScreen = () => {
   const {
-    state: { isGold, boxes },
-    showWindowGold,
+    state: { isGold, boxes, isTransport },
+    showWindowGold,showTransportContainer
   } = useResult();
   const {
     state: { type, measure, width, heigth, long, weigthMax },
@@ -21,13 +23,16 @@ export const CalculatorScreen = () => {
     changeContainerReffer20FT,
     changeContainerReffer40FT,
     changeContainerReffer40HQ,
+    changeTransport 
   } = useContainer();
   const [typeContainer, setTypeContainer] = useState("DRY");
   const [measureContainer, setMeasureContainer] = useState("20FT");
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const changeContainer = () => {
+   
     if (typeContainer === "DRY") {
+      showTransportContainer(false);
       if (measureContainer === "20FT") {
         changeContainerDry20FT();
       }
@@ -39,6 +44,7 @@ export const CalculatorScreen = () => {
       }
     }
     if (typeContainer === "REFFER") {
+      showTransportContainer(false);
       if (measureContainer === "20FT") {
         changeContainerReffer20FT();
       }
@@ -48,6 +54,15 @@ export const CalculatorScreen = () => {
       if (measureContainer === "40HQ") {
         changeContainerReffer40HQ();
       }
+    }
+    if(typeContainer === "TRANSPORT"){
+      showTransportContainer(true);
+      changeTransport({type: "Transporte Terrestre ",
+      measure: "",
+      width: 0,
+      heigth: 0,
+      long: 0,
+      weigthMax: 0,})
     }
   };
   useEffect(() => {
@@ -92,6 +107,11 @@ export const CalculatorScreen = () => {
       <Container style={page}>
         <Row>
           <Col md className="col-md-6" style={cont1}>
+            <Row style={{ width: "100%" }}>
+              <div className=" d-flex flex-column justify-content-start align-items-start mb-5">
+                <img src={logo} alt="logo" height={"60px"} />
+              </div>
+            </Row>
             <Row
               className="text-center text-white"
               style={{ fontSize: "20px" }}
@@ -111,14 +131,19 @@ export const CalculatorScreen = () => {
               >
                 Tipos de Contenedor
               </Row>
-              <div  className="row" style={contOp}>
+              <div className="row" style={contOp}>
+                {/*Contenedor Dry */}
                 <div className="col-sm-4 text-center">
                   <img
                     src={container1}
                     alt="Container"
                     width={"145px"}
                     className="img-fluid img-thumbnail"
-                    style={{backgroundColor:"transparent", border:"0px solid"}}
+                    style={{
+                      backgroundColor: "transparent",
+                      border: "0px solid",
+                      height: "80px",
+                    }}
                   />
                   <input
                     type="radio"
@@ -135,13 +160,18 @@ export const CalculatorScreen = () => {
                     Contenedor Seco o Dry
                   </p>
                 </div>
+                {/*Contenedor Refrigerado */}
                 <div className="col-sm-4 text-center">
                   <img
                     src={container2}
                     alt="Container"
                     width={"145px"}
                     className="img-fluid img-thumbnail"
-                    style={{backgroundColor:"transparent", border:"0px solid"}}
+                    style={{
+                      backgroundColor: "transparent",
+                      border: "0px solid",
+                      height: "80px",
+                    }}
                   />
                   <input
                     type="radio"
@@ -157,6 +187,33 @@ export const CalculatorScreen = () => {
                     Contenedor Refrigerado
                   </p>
                 </div>
+                {/*Transporte Terrestre */}
+                <div className="col-sm-4 text-center">
+                  <img
+                    src={transport}
+                    alt="Container"
+                    width={"145px"}
+                    className="img-fluid img-thumbnail"
+                    style={{
+                      backgroundColor: "transparent",
+                      border: "0px solid",
+                      height: "80px",
+                    }}
+                  />
+                  <input
+                    type="radio"
+                    name="type"
+                    onClick={() => {
+                      setTypeContainer("TRANSPORT");
+                    }}
+                  />
+                  <p
+                    className="text-center text-white "
+                    style={{ fontSize: "13px" }}
+                  >
+                    Transporte Terrestre
+                  </p>
+                </div>
               </div>
             </div>
             <div className="w-100 d-flex flex-column align-items-center justify-content-center mt-5">
@@ -166,35 +223,47 @@ export const CalculatorScreen = () => {
               >
                 Medidas
               </Row>
+             { isTransport?<span
+                className=" d-flex justify-content-start align-items-start text-left text-white m-2"
+                style={{ fontSize: "10px" , textAlign:"left"}}
+              >
+                Por favor ingrese todos los datos.
+              </span>:<></>}
               <div
                 style={contOp}
-                className="d-flex align-items-center justify-content-around text-white"
+                className={"d-flex align-items-center justify-content-around text-white mb-3"}
               >
-                <input
-                  type="radio"
-                  name="measure"
-                  onClick={() => {
-                    setMeasureContainer("20FT");
-                  }}
-                  defaultChecked
-                />
-                <p className="m-1">20 FT</p>
-                <input
-                  type="radio"
-                  name="measure"
-                  onClick={() => {
-                    setMeasureContainer("40FT");
-                  }}
-                />
-                <p className="m-1">40 FT</p>
-                <input
-                  type="radio"
-                  name="measure"
-                  onClick={() => {
-                    setMeasureContainer("40HQ");
-                  }}
-                />
-                <p className="m-1">40 HQ</p>
+                {isTransport ? (
+                  <ContainerTransport />
+                ) : (
+                  <>
+                    <input
+                      type="radio"
+                      name="measure"
+                      onClick={() => {
+                        setMeasureContainer("20FT");
+                      }}
+                      defaultChecked
+                    />
+                    <p className="m-1">20 FT</p>
+                    <input
+                      type="radio"
+                      name="measure"
+                      onClick={() => {
+                        setMeasureContainer("40FT");
+                      }}
+                    />
+                    <p className="m-1">40 FT</p>
+                    <input
+                      type="radio"
+                      name="measure"
+                      onClick={() => {
+                        setMeasureContainer("40HQ");
+                      }}
+                    />
+                    <p className="m-1">40 HQ</p>
+                  </>
+                )}
               </div>
             </div>
           </Col>
@@ -206,9 +275,7 @@ export const CalculatorScreen = () => {
             <div className=" d-flex justify-content-center align-items-center">
               <p style={{ fontSize: "20px" }}>Carga</p>
             </div>
-            {/* <div className=" d-flex flex-column col-6 justify-content-end align-items-end">
-                <img src={logo} alt="logo" height={"60px"} />
-                </div>*/}
+
             <ContainerBoxes />
             <p style={{ fontSize: "20px", marginTop: "10px", height: "20px" }}>
               Resultados
@@ -263,7 +330,10 @@ export const CalculatorScreen = () => {
                 </div>
               </div>
               <div className="container-fluid">
-                <div className="row flex-nowrap justify-content-center" style={scrollh}>
+                <div
+                  className="row flex-nowrap justify-content-center"
+                  style={scrollh}
+                >
                   {results}
                 </div>
               </div>
@@ -293,7 +363,7 @@ const contOp: React.CSSProperties = {
   padding: "10px",
   borderRadius: "10px",
   width: "90%",
-  justifyContent:"center"
+  justifyContent: "center",
 };
 const scrollh: React.CSSProperties = {
   overflow: "auto",

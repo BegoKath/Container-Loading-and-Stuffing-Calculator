@@ -63,7 +63,15 @@ export const useContainer = () => {
     dispatch(containerActions.setWeigthMax(29520));
     volumenContainer();
   };
-  
+  const changeTransport = (values:IContainerState) => {
+    dispatch(containerActions.setType(values.type));
+    dispatch(containerActions.setMeasure(values.measure));
+    dispatch(containerActions.setWidth(values.width));
+    dispatch(containerActions.setHeigth(values.heigth));
+    dispatch(containerActions.setLong(values.long));
+    dispatch(containerActions.setWeigthMax(values.weigthMax));
+    volumenContainer();
+  };
   return {
     state,
     changeContainerDry20FT,
@@ -71,6 +79,7 @@ export const useContainer = () => {
     changeContainerDry40HQ,
     changeContainerReffer20FT,
     changeContainerReffer40FT,
-    changeContainerReffer40HQ
+    changeContainerReffer40HQ,
+    changeTransport
   };
 };

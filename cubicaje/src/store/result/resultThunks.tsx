@@ -93,7 +93,7 @@ const calculeBoxes = (
       numBoxes = option1.numBoxes + option2.numBoxes;
     }
     var weigthBoxes = values.weigth * numBoxes;
-    const unitsBoxes = values.quantity * numBoxes;
+    const unitsBoxes = values.units * numBoxes;
     if (weigthBoxes > parseInt(weigthMax)) {
       for (
         var i = weigthBoxes;
@@ -127,11 +127,10 @@ const resultMultiplesBoxes =
   (boxes: IBox[], values: IBox, update: boolean): any =>
   (dispatch: Dispatch, getState: any) => {
     const { isGold } = getState().result;
-    const { width, heigth, long, weigthMax } = getState().container;
-    const boxLong = parseInt((long / values.long).toString());
-    const boxWidth = parseInt((width / values.width).toString());
-    const boxHeight = parseInt((heigth / values.height).toString());
-    var numBoxes = boxHeight * boxWidth * boxLong;
+    const { width, heigth, long, weigthMax } = getState().container;    
+    const option1 = calculeBoxes(long, width, heigth, values);
+    var numBoxes = values.quantity;
+
     var weigthBoxes = values.weigth * numBoxes;
     const unitsBoxes = values.quantity * numBoxes;
     if (weigthBoxes > parseInt(weigthMax)) {
@@ -155,6 +154,7 @@ const resultMultiplesBoxes =
           long: values.long,
           quantity: values.quantity,
           update: true,
+          units:values.units,
           result: {
             numboxes: numBoxes,
             weightMax: weigthBoxes,
@@ -176,6 +176,7 @@ const resultMultiplesBoxes =
         long: 0,
         quantity: 0,
         update: false,
+        units:0,
         result: {
           numboxes: 0,
           weightMax: 0,

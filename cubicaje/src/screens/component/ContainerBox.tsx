@@ -17,6 +17,7 @@ export const ContainerBox = (boxItem: IBox) => {
     quantity: boxItem.quantity,
     weigth: boxItem.weigth,
     update: boxItem.update,
+    units:boxItem.units,
     result: boxItem.result,
   });
   const { resultUniqueBox } = useResult();

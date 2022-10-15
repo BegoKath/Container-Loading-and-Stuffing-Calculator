@@ -23,6 +23,7 @@ export const defaultState: IResultState = {
     long:0,
     quantity:0,
     weigth:0,
+    units:0,
     update:false,
     result:result}],
   volumenContainer:0,

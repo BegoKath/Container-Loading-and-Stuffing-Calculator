@@ -8,5 +8,6 @@ export interface IBox{
     weigth:number,
     quantity:number,
     update:boolean,
+    units:number,
     result:IResult    
 }

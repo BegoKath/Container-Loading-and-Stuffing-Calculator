@@ -85,9 +85,9 @@ export const CalculatorScreen = () => {
         className={
           " d-flex flex-column " +
           (isGold ? "col-5 " : "col-12 ") +
-          "justify-content-around border rounded-lg px-4 py-2 bg-white shadow-sm mx-1"
+          "justify-content-around border rounded-lg bg-white shadow-sm mx-1"
         }
-        style={{ width: "200px" }}
+        style={{ width: isGold ?"200px":"100%" }}
         key={e.id}
       >
         <p style={{ fontSize: "13px", color: "#6f85d9" }}>
@@ -103,15 +103,11 @@ export const CalculatorScreen = () => {
     );
   });
   return (
-    <div className="d-flex align-items-center justify-content-center m-3">
+    
       <Container style={page}>
-        <Row>
+        <Row className="w-100" style={{border: "2px solid black",}}>
           <Col md className="col-md-6" style={cont1}>
-            <Row style={{ width: "100%" }}>
-              <div className=" d-flex flex-column justify-content-start align-items-start mb-5">
-                <img src={logo} alt="logo" height={"60px"} />
-              </div>
-            </Row>
+           
             <Row
               className="text-center text-white"
               style={{ fontSize: "20px" }}
@@ -270,11 +266,18 @@ export const CalculatorScreen = () => {
           <Col
             md
             className="col-md-6"
-            style={{ minHeight: "650px", paddingTop: "10px" }}
+            style={{ minHeight:"90vh", paddingTop: "10px",display:"flex",flexDirection:"column",justifyContent:"space-around" }}
           >
-            <div className=" d-flex justify-content-center align-items-center">
+            <Row>
+            <div className=" d-flex flex-column col-8 justify-content-center align-items-center">
               <p style={{ fontSize: "20px" }}>Carga</p>
+             
             </div>
+            <div className=" d-flex flex-column col-4  justify-content-center align-items-center" >
+                <img src={logo} alt="logo" height={"60px"} />
+              </div>
+            </Row>
+            
 
             <ContainerBoxes />
             <p style={{ fontSize: "20px", marginTop: "10px", height: "20px" }}>
@@ -289,7 +292,7 @@ export const CalculatorScreen = () => {
               }}
             >
               <div
-                className=" d-flex flex-column col-5 justify-content-center border rounded  px-2 py-2  shadow-sm mb-1"
+                className=" d-flex flex-column col-md-5 justify-content-center border rounded  px-2 py-2  shadow-sm mb-1"
                 style={{
                   backgroundColor: "#6f85d9",
                   width: isGold ? "100%" : "",
@@ -329,30 +332,35 @@ export const CalculatorScreen = () => {
                   </div>
                 </div>
               </div>
-              <div className="container-fluid">
+              <div className=" d-flex flex-column col-md-5 justify-content-center  mb-1" style={{width: isGold ? "100%" : "",}}>
+              <div className="container-fluid w-100 h-100">
                 <div
-                  className="row flex-nowrap justify-content-center"
-                  style={scrollh}
+                  className={"row  flex-nowrap h-100"}
+                  style={{overflow: isGold ?"auto":"hidden",}}
                 >
                   {results}
                 </div>
               </div>
+              </div>
+              
             </div>
           </Col>
         </Row>
       </Container>
-    </div>
+   
   );
 };
 const page: React.CSSProperties = {
-  width: "90%",
-  minHeight: "90%",
-  border: "2px solid black",
+  width: "100%",
+  minHeight:"100vh",
   fontFamily: "'Roboto Flex', 'sans-serif'",
+  display:"flex",
+  justifyContent:"center",
+  alignItems:"center "
 };
 const cont1: React.CSSProperties = {
+  minHeight:"90vh",
   backgroundColor: "#465489",
-  minHeight: "650px",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -363,8 +371,7 @@ const contOp: React.CSSProperties = {
   padding: "10px",
   borderRadius: "10px",
   width: "90%",
+  
   justifyContent: "center",
 };
-const scrollh: React.CSSProperties = {
-  overflow: "auto",
-};
+

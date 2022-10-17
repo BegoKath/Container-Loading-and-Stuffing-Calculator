@@ -8,6 +8,8 @@ export interface IResultState {
   volumenContainer:number;
   isGold:boolean;
   isTransport:boolean;
+  percentVolumen:number,
+  percentWeigth:number,
 }
 const result:IResult={
   numboxes:0,
@@ -27,6 +29,8 @@ export const defaultState: IResultState = {
     update:false,
     result:result}],
   volumenContainer:0,
+  percentVolumen:0,
+  percentWeigth:0,
   numStep:0,
   isGold:false,
   isTransport:false
@@ -45,6 +49,12 @@ export const resultSlice = createSlice({
     },
     setNumStep: (state, action: PayloadAction<number>) => {
       state.numStep = action.payload;
+    },
+    setPercentVolumen: (state, action: PayloadAction<number>) => {
+      state.percentVolumen = action.payload;
+    },
+    setPercentWeigth: (state, action: PayloadAction<number>) => {
+      state.percentWeigth = action.payload;
     },
     setGold: (state, action: PayloadAction<boolean>) => {
       state.isGold = action.payload;

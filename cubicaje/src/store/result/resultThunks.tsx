@@ -73,8 +73,8 @@ const calculeBoxes = (
 
   return { numBoxes, space, index1 };
 };
-  //calcula cuantas cajas pueden entrar de una sola medida
-  const resultUniqueBox =
+//calcula cuantas cajas pueden entrar de una sola medida
+const resultUniqueBox =
   (values: IBox, boxes: IBox[]): any =>
   (dispatch: Dispatch, getState: any) => {
     const { width, heigth, long, weigthMax } = getState().container;
@@ -122,75 +122,97 @@ const calculeBoxes = (
     dispatch(resultActions.setBoxes(newBoxes));
   };
 
-
 const resultMultiplesBoxes =
   (boxes: IBox[], values: IBox, update: boolean): any =>
   (dispatch: Dispatch, getState: any) => {
-    const { isGold } = getState().result;
-    const { width, heigth, long, weigthMax } = getState().container;    
-    const option1 = calculeBoxes(long, width, heigth, values);
+    const { isGold, volumenContainer } = getState().result;
+    const { weigthMax } = getState().container;
     var numBoxes = values.quantity;
-
+    const volumenBox = values.height * values.width * values.long;
+    var volumenNumBox = volumenBox * numBoxes;
+    var volumenBoxes = 0;
     var weigthBoxes = values.weigth * numBoxes;
-    const unitsBoxes = values.quantity * numBoxes;
-    if (weigthBoxes > parseInt(weigthMax)) {
-      for (
-        var i = weigthBoxes;
-        i > parseInt(weigthMax);
-        i = weigthBoxes - values.weigth
-      ) {
-        numBoxes = numBoxes - 1;
-        weigthBoxes = i;
-      }
-      weigthBoxes = values.weigth * numBoxes;
+    var weigthBoxesMax = 0;
+    if (boxes.length > 1) {
+      // eslint-disable-next-line array-callback-return
+      boxes.map((e: IBox) => {
+        if (e.id !== values.id) {
+          volumenBoxes = volumenBoxes + e.result.volumen;
+          weigthBoxesMax = weigthBoxesMax + e.result.weightMax;
+        }
+      });
+      volumenBoxes = volumenNumBox + volumenBoxes;
+      weigthBoxesMax = weigthBoxesMax + weigthBoxes;
+    } else {
+      volumenBoxes = volumenNumBox;
+      weigthBoxesMax = weigthBoxes;
     }
-    const newBoxes = boxes.map((e: IBox): IBox => {
-      if (e.id === values.id) {
-        e = {
-          id: values.id,
-          height: values.height,
-          width: values.width,
-          weigth: values.weigth,
-          long: values.long,
-          quantity: values.quantity,
-          update: true,
-          units:values.units,
+    //verifica si queda espacio en el contenedor
+    if (volumenBoxes < volumenContainer && weigthBoxesMax < weigthMax) {
+      const unitsBoxes = values.quantity * numBoxes;
+      const percent = (volumenNumBox / volumenContainer) * 100;
+      const percentWeigth = (weigthBoxesMax / weigthMax) * 100;
+      var percentVolumen = 0;
+      const newBoxes = boxes.map((e: IBox): IBox => {
+        if (e.id === values.id) {
+          e = {
+            id: values.id,
+            height: values.height,
+            width: values.width,
+            weigth: values.weigth,
+            long: values.long,
+            quantity: values.quantity,
+            update: true,
+            units: values.units,
+            result: {
+              numboxes: numBoxes,
+              weightMax: weigthBoxes,
+              units: unitsBoxes,
+              volumen: volumenNumBox,
+              percent: Number(percent.toFixed(2)),
+            },
+          };
+        }
+        percentVolumen = percentVolumen + e.result.percent;
+        return e;
+      });
+
+      if (isGold === true && update === false) {
+        const newBox: IBox = {
+          id: boxes.length,
+          height: 0,
+          width: 0,
+          weigth: 0,
+          long: 0,
+          quantity: 0,
+          update: false,
+          units: 0,
           result: {
-            numboxes: numBoxes,
-            weightMax: weigthBoxes,
-            units: unitsBoxes,
+            numboxes: 0,
+            weightMax: 0,
+            units: 0,
             volumen: 0,
             percent: 0,
           },
         };
+        newBoxes.push(newBox);        
+        dispatch(resultActions.setBoxes(newBoxes));
+        dispatch(resultActions.setNumStep(boxes.length));
+        dispatch(resultActions.setPercentVolumen(Number(percentVolumen.toFixed(2))));
+        dispatch(
+          resultActions.setPercentWeigth(Number(percentWeigth.toFixed(2)))
+        );
+        return;
       }
-      return e;
-    });
 
-    if (isGold === true && update === false) {
-      const newBox: IBox = {
-        id: boxes.length,
-        height: 0,
-        width: 0,
-        weigth: 0,
-        long: 0,
-        quantity: 0,
-        update: false,
-        units:0,
-        result: {
-          numboxes: 0,
-          weightMax: 0,
-          units: 0,
-          volumen: 0,
-          percent: 0,
-        },
-      };
-      newBoxes.push(newBox);
       dispatch(resultActions.setBoxes(newBoxes));
-      dispatch(resultActions.setNumStep(boxes.length));
-      return;
+      dispatch(resultActions.setPercentVolumen(Number(percentVolumen.toFixed(2))));
+      dispatch(
+        resultActions.setPercentWeigth(Number(percentWeigth.toFixed(2)))
+      );
+    } else {
+      console.log("no hay espacio");
     }
-    dispatch(resultActions.setBoxes(newBoxes));
   };
 export const resultThunks = {
   volumenContainer,

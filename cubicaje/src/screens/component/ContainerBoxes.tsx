@@ -84,7 +84,7 @@ export const ContainerBoxes = () => {
           className="img-fluid img-thumbnail"
           style={{ border: "0px solid" }}
         />
-        <span style={{color:"#465489"}}>{"Carga " + (activeStep + 1)}</span>
+        <span style={{color:"#465489"}}>{"Caja " + (activeStep + 1)}</span>
         {isGold&&
         <MobileStepper
           steps={maxSteps}

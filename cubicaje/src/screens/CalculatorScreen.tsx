@@ -13,7 +13,7 @@ import Progressbar from "./component/ProgressBar";
 
 export const CalculatorScreen = () => {
   const {
-    state: { isGold, boxes, isTransport },
+    state: { isGold, boxes, isTransport, percentVolumen, percentWeigth },
     showWindowGold,
     showTransportContainer,
   } = useResult();
@@ -82,7 +82,7 @@ export const CalculatorScreen = () => {
   //cambia la información del contenedor
   useEffect(() => {
     changeContainer();
-  }, [typeContainer, measureContainer, changeContainer, boxes]);
+  }, [typeContainer, measureContainer, changeContainer, boxes, percentVolumen, percentWeigth]);
   //desplega los resultados de las cajas
   const results = boxes.map((e: IBox) => {
     return (
@@ -354,9 +354,9 @@ export const CalculatorScreen = () => {
             {isGold ? (
               <div>
                 <span style={{fontSize:"13px" }}>Volumen</span>
-                <Progressbar bgcolor="#2E9AFE" progress="30" height={20} />
+                <Progressbar bgcolor="#2E9AFE" progress={percentVolumen.toString()} height={20} />
                 <span style={{fontSize:"13px" }}>Peso</span>
-                <Progressbar bgcolor="greenyellow" progress="50" height={20} />
+                <Progressbar bgcolor="greenyellow" progress={percentWeigth.toString()} height={20} />
               </div>
             ) : (
               <InfoContainers />

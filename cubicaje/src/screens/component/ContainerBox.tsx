@@ -31,12 +31,16 @@ export const ContainerBox = (boxItem: IBox) => {
       values.height !== 0 &&
       values.long !== 0 &&
       values.width !== 0 &&
-      values.quantity !== 0
-    ) {
-      
+      values.units !== 0
+    ) {      
       if (isGold) {
-        const update=values.update;
-        resultMultiplesBoxes(values,update);
+        if(values.quantity !==0){
+          const update=values.update;
+          resultMultiplesBoxes(values,update);
+        }else{
+          console.log("falta items");
+        }
+        
       }else{
         resultUniqueBox(values);
       }
@@ -57,7 +61,7 @@ export const ContainerBox = (boxItem: IBox) => {
       <TextField
         value={values.width}
         onChange={handleChange("width")}
-        label="Ancho de carga"
+        label="Ancho de caja"
         size="small"
         type="number"
         style={{ marginBottom: "10px" }}
@@ -69,7 +73,7 @@ export const ContainerBox = (boxItem: IBox) => {
       <TextField
         value={values.long}
         onChange={handleChange("long")}
-        label="Largo de carga"
+        label="Largo de caja"
         id="outlined-size-small"
         size="small"
         type="number"
@@ -82,7 +86,7 @@ export const ContainerBox = (boxItem: IBox) => {
       <TextField
         value={values.height}
         onChange={handleChange("height")}
-        label="Alto de carga"
+        label="Alto de caja"
         id="outlined-size-small"
         size="small"
         type="number"
@@ -95,7 +99,7 @@ export const ContainerBox = (boxItem: IBox) => {
       <TextField
         value={values.weigth}
         onChange={handleChange("weigth")}
-        label="Peso de la carga"
+        label="Peso de la caja"
         id="outlined-size-small"
         size="small"
         type="number"
@@ -105,9 +109,9 @@ export const ContainerBox = (boxItem: IBox) => {
         }}
       />
       <TextField
-        value={values.quantity}
-        onChange={handleChange("quantity")}
-        label="Cantidad"
+        value={values.units}
+        onChange={handleChange("units")}
+        label="Unidades por caja"
         id="outlined-size-small"
         size="small"
         type="number"
@@ -116,6 +120,19 @@ export const ContainerBox = (boxItem: IBox) => {
           endAdornment: <InputAdornment position="end">uni</InputAdornment>,
         }}
       />
+      {isGold&&<TextField
+        value={values.quantity}
+        onChange={handleChange("quantity")}
+        label="Cantidad de cajas"
+        id="outlined-size-small"
+        size="small"
+        type="number"
+        style={{ marginBottom: "10px" }}
+        InputProps={{
+          endAdornment: <InputAdornment position="end">uni</InputAdornment>,
+        }}
+      />}
+      
       <Button onClick={calcule} style={{ marginBottom: "20px ",background: "#6f85d9" }}>
         {isGold
           ? values.update

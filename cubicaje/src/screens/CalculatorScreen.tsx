@@ -9,11 +9,13 @@ import { useResult } from "../hooks/useResult";
 import { ContainerBoxes } from "./component/ContainerBoxes";
 import { IBox } from "../interfaces/Ibox";
 import { ContainerTransport } from "./component/ContainerTransport";
+import Progressbar from "./component/ProgressBar";
 
 export const CalculatorScreen = () => {
   const {
     state: { isGold, boxes, isTransport },
-    showWindowGold,showTransportContainer
+    showWindowGold,
+    showTransportContainer,
   } = useResult();
   const {
     state: { type, measure, width, heigth, long, weigthMax },
@@ -23,14 +25,13 @@ export const CalculatorScreen = () => {
     changeContainerReffer20FT,
     changeContainerReffer40FT,
     changeContainerReffer40HQ,
-    changeTransport 
+    changeTransport,
   } = useContainer();
   const [typeContainer, setTypeContainer] = useState("DRY");
   const [measureContainer, setMeasureContainer] = useState("20FT");
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const changeContainer = () => {
-   
     if (typeContainer === "DRY") {
       showTransportContainer(false);
       if (measureContainer === "20FT") {
@@ -55,16 +56,19 @@ export const CalculatorScreen = () => {
         changeContainerReffer40HQ();
       }
     }
-    if(typeContainer === "TRANSPORT"){
+    if (typeContainer === "TRANSPORT") {
       showTransportContainer(true);
-      changeTransport({type: "Transporte Terrestre ",
-      measure: "",
-      width: 0,
-      heigth: 0,
-      long: 0,
-      weigthMax: 0,})
+      changeTransport({
+        type: "Transporte Terrestre ",
+        measure: "",
+        width: 0,
+        heigth: 0,
+        long: 0,
+        weigthMax: 0,
+      });
     }
   };
+  //identifica si la pagina es Gold
   useEffect(() => {
     const url = window.location.href;
     const urlParams = new URLSearchParams(url);
@@ -75,10 +79,11 @@ export const CalculatorScreen = () => {
     }
     showWindowGold(false);
   }, [showWindowGold]);
+  //cambia la información del contenedor
   useEffect(() => {
     changeContainer();
-    console.log(boxes);
   }, [typeContainer, measureContainer, changeContainer, boxes]);
+  //desplega los resultados de las cajas
   const results = boxes.map((e: IBox) => {
     return (
       <div
@@ -87,9 +92,12 @@ export const CalculatorScreen = () => {
           (isGold ? "col-5 " : "col-12 ") +
           "justify-content-around border rounded-lg bg-white shadow-sm mx-1"
         }
-        style={{ width: isGold ?"200px":"100%" }}
+        style={{ width: isGold ? "200px" : "100%",padding:"10px" }}
         key={e.id}
       >
+        <p style={{ fontSize: "13px", color: "#6f85d9", textAlign:"center" }}>
+          {"Caja " + (e.id+1)}
+        </p>
         <p style={{ fontSize: "13px", color: "#6f85d9" }}>
           {"Cajas: " + e.result.numboxes}
         </p>
@@ -102,264 +110,287 @@ export const CalculatorScreen = () => {
       </div>
     );
   });
+  //desplega la información de los contenedores
+  function InfoContainers() {
+    return (
+      <>
+        <div
+          className=" d-flex flex-column col-md-5 justify-content-center  px-2 py-2  shadow-sm mb-1 mt-2"
+          style={{
+            backgroundColor: "#6f85d9",
+            width: isGold ? "90%" : "",
+            borderRadius: "10px",
+          }}
+        >
+          <p
+            style={{
+              fontSize: "15px",
+              color: "white",
+              textAlign: "center",
+            }}
+          >
+            {type + measure}
+          </p>
+          <div
+            className="d-flex "
+            style={{
+              flexDirection: isGold ? "row" : "column",
+              justifyContent: "space-around",
+            }}
+          >
+            <div className="d-flex flex-column">
+              <p style={{ fontSize: "15px", color: "white" }}>
+                {"Largo: " + long + " mm"}
+              </p>
+              <p style={{ fontSize: "15px", color: "white" }}>
+                {"Ancho: " + width + " mm"}
+              </p>
+            </div>
+            <div className="d-flex flex-column">
+              <p style={{ fontSize: "15px", color: "white" }}>
+                {"Alto: " + heigth + " mm"}
+              </p>
+              <p style={{ fontSize: "15px", color: "white" }}>
+                {"Peso Max: " + weigthMax + " Kg"}
+              </p>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
   return (
-    
-      <Container style={page}>
-        <Row className="w-100" style={{border: "2px solid black",}}>
-          <Col md className="col-md-6" style={cont1}>
-           
+    <Container style={page}>
+      <Row className="w-100" style={{ border: "2px solid black" }}>
+        <Col md className="col-md-6" style={cont1}>
+          <Row className="text-center text-white" style={{ fontSize: "20px" }}>
+            Cubicaje de contenedores
+          </Row>
+          <Row className="text-center text-white" style={{ fontSize: "50px" }}>
+            Calculadora
+          </Row>
+          <div className="w-100 d-flex flex-column align-items-center justify-content-center mt-5">
             <Row
-              className="text-center text-white"
-              style={{ fontSize: "20px" }}
+              className="text-center text-white "
+              style={{ fontSize: "15px" }}
             >
-              Cubicaje de contenedores
+              Tipos de Contenedor
             </Row>
+            <div className="row" style={contOp}>
+              {/*Contenedor Dry */}
+              <div className="col-sm-4 text-center">
+                <img
+                  src={container1}
+                  alt="Container"
+                  width={"145px"}
+                  className="img-fluid img-thumbnail"
+                  style={{
+                    backgroundColor: "transparent",
+                    border: "0px solid",
+                    height: "80px",
+                  }}
+                />
+                <input
+                  type="radio"
+                  name="type"
+                  onClick={() => {
+                    setTypeContainer("DRY");
+                  }}
+                  defaultChecked
+                />
+                <p
+                  className="text-center text-white "
+                  style={{ fontSize: "13px" }}
+                >
+                  Contenedor Seco o Dry
+                </p>
+              </div>
+              {/*Contenedor Refrigerado */}
+              <div className="col-sm-4 text-center">
+                <img
+                  src={container2}
+                  alt="Container"
+                  width={"145px"}
+                  className="img-fluid img-thumbnail"
+                  style={{
+                    backgroundColor: "transparent",
+                    border: "0px solid",
+                    height: "80px",
+                  }}
+                />
+                <input
+                  type="radio"
+                  name="type"
+                  onClick={() => {
+                    setTypeContainer("REFFER");
+                  }}
+                />
+                <p
+                  className="text-center text-white "
+                  style={{ fontSize: "13px" }}
+                >
+                  Contenedor Refrigerado
+                </p>
+              </div>
+              {/*Transporte Terrestre */}
+              <div className="col-sm-4 text-center">
+                <img
+                  src={transport}
+                  alt="Container"
+                  width={"145px"}
+                  className="img-fluid img-thumbnail"
+                  style={{
+                    backgroundColor: "transparent",
+                    border: "0px solid",
+                    height: "80px",
+                  }}
+                />
+                <input
+                  type="radio"
+                  name="type"
+                  onClick={() => {
+                    setTypeContainer("TRANSPORT");
+                  }}
+                />
+                <p
+                  className="text-center text-white "
+                  style={{ fontSize: "13px" }}
+                >
+                  Transporte Terrestre
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="w-100 d-flex flex-column align-items-center justify-content-center mt-5">
             <Row
-              className="text-center text-white"
-              style={{ fontSize: "50px" }}
+              className="text-center text-white "
+              style={{ fontSize: "15px" }}
             >
-              Calculadora
+              Medidas
             </Row>
-            <div className="w-100 d-flex flex-column align-items-center justify-content-center mt-5">
-              <Row
-                className="text-center text-white "
-                style={{ fontSize: "15px" }}
+            {isTransport ? (
+              <span
+                className=" d-flex justify-content-start align-items-start text-left text-white m-2"
+                style={{ fontSize: "10px", textAlign: "left" }}
               >
-                Tipos de Contenedor
-              </Row>
-              <div className="row" style={contOp}>
-                {/*Contenedor Dry */}
-                <div className="col-sm-4 text-center">
-                  <img
-                    src={container1}
-                    alt="Container"
-                    width={"145px"}
-                    className="img-fluid img-thumbnail"
-                    style={{
-                      backgroundColor: "transparent",
-                      border: "0px solid",
-                      height: "80px",
-                    }}
-                  />
+                Por favor ingrese todos los datos.
+              </span>
+            ) : (
+              <></>
+            )}
+            <div
+              style={contOp}
+              className={
+                "d-flex align-items-center justify-content-around text-white mb-3"
+              }
+            >
+              {isTransport ? (
+                <ContainerTransport />
+              ) : (
+                <>
                   <input
                     type="radio"
-                    name="type"
+                    name="measure"
                     onClick={() => {
-                      setTypeContainer("DRY");
+                      setMeasureContainer("20FT");
                     }}
                     defaultChecked
                   />
-                  <p
-                    className="text-center text-white "
-                    style={{ fontSize: "13px" }}
-                  >
-                    Contenedor Seco o Dry
-                  </p>
-                </div>
-                {/*Contenedor Refrigerado */}
-                <div className="col-sm-4 text-center">
-                  <img
-                    src={container2}
-                    alt="Container"
-                    width={"145px"}
-                    className="img-fluid img-thumbnail"
-                    style={{
-                      backgroundColor: "transparent",
-                      border: "0px solid",
-                      height: "80px",
-                    }}
-                  />
+                  <p className="m-1">20 FT</p>
                   <input
                     type="radio"
-                    name="type"
+                    name="measure"
                     onClick={() => {
-                      setTypeContainer("REFFER");
+                      setMeasureContainer("40FT");
                     }}
                   />
-                  <p
-                    className="text-center text-white "
-                    style={{ fontSize: "13px" }}
-                  >
-                    Contenedor Refrigerado
-                  </p>
-                </div>
-                {/*Transporte Terrestre */}
-                <div className="col-sm-4 text-center">
-                  <img
-                    src={transport}
-                    alt="Container"
-                    width={"145px"}
-                    className="img-fluid img-thumbnail"
-                    style={{
-                      backgroundColor: "transparent",
-                      border: "0px solid",
-                      height: "80px",
-                    }}
-                  />
+                  <p className="m-1">40 FT</p>
                   <input
                     type="radio"
-                    name="type"
+                    name="measure"
                     onClick={() => {
-                      setTypeContainer("TRANSPORT");
+                      setMeasureContainer("40HQ");
                     }}
                   />
-                  <p
-                    className="text-center text-white "
-                    style={{ fontSize: "13px" }}
-                  >
-                    Transporte Terrestre
-                  </p>
-                </div>
-              </div>
+                  <p className="m-1">40 HQ</p>
+                </>
+              )}
             </div>
-            <div className="w-100 d-flex flex-column align-items-center justify-content-center mt-5">
-              <Row
-                className="text-center text-white "
-                style={{ fontSize: "15px" }}
-              >
-                Medidas
-              </Row>
-             { isTransport?<span
-                className=" d-flex justify-content-start align-items-start text-left text-white m-2"
-                style={{ fontSize: "10px" , textAlign:"left"}}
-              >
-                Por favor ingrese todos los datos.
-              </span>:<></>}
-              <div
-                style={contOp}
-                className={"d-flex align-items-center justify-content-around text-white mb-3"}
-              >
-                {isTransport ? (
-                  <ContainerTransport />
-                ) : (
-                  <>
-                    <input
-                      type="radio"
-                      name="measure"
-                      onClick={() => {
-                        setMeasureContainer("20FT");
-                      }}
-                      defaultChecked
-                    />
-                    <p className="m-1">20 FT</p>
-                    <input
-                      type="radio"
-                      name="measure"
-                      onClick={() => {
-                        setMeasureContainer("40FT");
-                      }}
-                    />
-                    <p className="m-1">40 FT</p>
-                    <input
-                      type="radio"
-                      name="measure"
-                      onClick={() => {
-                        setMeasureContainer("40HQ");
-                      }}
-                    />
-                    <p className="m-1">40 HQ</p>
-                  </>
-                )}
-              </div>
-            </div>
-          </Col>
-          <Col
-            md
-            className="col-md-6"
-            style={{ minHeight:"90vh", paddingTop: "10px",display:"flex",flexDirection:"column",justifyContent:"space-around" }}
-          >
-            <Row>
+            {isGold ? <InfoContainers /> : <></>}
+          </div>
+        </Col>
+        <Col
+          md
+          className="col-md-6"
+          style={{
+            minHeight: "90vh",
+            paddingTop: "10px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-around",
+          }}
+        >
+          <Row>
             <div className=" d-flex flex-column col-8 justify-content-center align-items-center">
               <p style={{ fontSize: "20px" }}>Carga</p>
-             
             </div>
-            <div className=" d-flex flex-column col-4  justify-content-center align-items-center" >
-                <img src={logo} alt="logo" height={"60px"} />
-              </div>
-            </Row>
-            
+            <div className=" d-flex flex-column col-4  justify-content-center align-items-center">
+              <img src={logo} alt="logo" height={"60px"} />
+            </div>
+          </Row>
 
-            <ContainerBoxes />
-            <p style={{ fontSize: "20px", marginTop: "10px", height: "20px" }}>
-              Resultados
-            </p>
-            <div
-              className="d-flex mb-2"
-              style={{
-                flexDirection: isGold ? "column" : "row",
-                justifyContent: isGold ? "center" : "space-around",
-                alignItems: isGold ? "center" : "space-around",
-              }}
-            >
-              <div
-                className=" d-flex flex-column col-md-5 justify-content-center border rounded  px-2 py-2  shadow-sm mb-1"
-                style={{
-                  backgroundColor: "#6f85d9",
-                  width: isGold ? "100%" : "",
-                }}
-              >
-                <p
-                  style={{
-                    fontSize: "15px",
-                    color: "white",
-                    textAlign: "center",
-                  }}
-                >
-                  {type + measure}
-                </p>
-                <div
-                  className="d-flex "
-                  style={{
-                    flexDirection: isGold ? "row" : "column",
-                    justifyContent: "space-around",
-                  }}
-                >
-                  <div className="d-flex flex-column">
-                    <p style={{ fontSize: "15px", color: "white" }}>
-                      {"Largo: " + long + " mm"}
-                    </p>
-                    <p style={{ fontSize: "15px", color: "white" }}>
-                      {"Ancho: " + width + " mm"}
-                    </p>
-                  </div>
-                  <div className="d-flex flex-column">
-                    <p style={{ fontSize: "15px", color: "white" }}>
-                      {"Alto: " + heigth + " mm"}
-                    </p>
-                    <p style={{ fontSize: "15px", color: "white" }}>
-                      {"Peso Max: " + weigthMax + " Kg"}
-                    </p>
-                  </div>
-                </div>
+          <ContainerBoxes />
+          <p style={{ fontSize: "20px", marginTop: "10px", height: "20px" }}>
+            Resultados
+          </p>
+          <div
+            className="d-flex mb-2"
+            style={{
+              flexDirection: isGold ? "column" : "row",
+              justifyContent:"space-around",
+              alignItems: "space-around",
+            }}
+          >
+            {isGold ? (
+              <div>
+                <span style={{fontSize:"13px" }}>Volumen</span>
+                <Progressbar bgcolor="#2E9AFE" progress="30" height={20} />
+                <span style={{fontSize:"13px" }}>Peso</span>
+                <Progressbar bgcolor="greenyellow" progress="50" height={20} />
               </div>
-              <div className=" d-flex flex-column col-md-5 justify-content-center  mb-1" style={{width: isGold ? "100%" : "",}}>
+            ) : (
+              <InfoContainers />
+            )}
+
+            <div
+              className=" d-flex flex-column col-md-5 justify-content-center  mb-1"
+              style={{ width: isGold ? "100%" : "" }}
+            >
               <div className="container-fluid w-100 h-100">
                 <div
                   className={"row  flex-nowrap h-100"}
-                  style={{overflow: isGold ?"auto":"hidden",}}
+                  style={{ overflow: isGold ? "auto" : "hidden" }}
                 >
                   {results}
                 </div>
               </div>
-              </div>
-              
             </div>
-          </Col>
-        </Row>
-      </Container>
-   
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 const page: React.CSSProperties = {
   width: "100%",
-  minHeight:"100vh",
+  minHeight: "100vh",
   fontFamily: "'Roboto Flex', 'sans-serif'",
-  display:"flex",
-  justifyContent:"center",
-  alignItems:"center "
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center ",
 };
 const cont1: React.CSSProperties = {
-  minHeight:"90vh",
+  minHeight: "90vh",
   backgroundColor: "#465489",
   display: "flex",
   flexDirection: "column",
@@ -371,7 +402,5 @@ const contOp: React.CSSProperties = {
   padding: "10px",
   borderRadius: "10px",
   width: "90%",
-  
   justifyContent: "center",
 };
-

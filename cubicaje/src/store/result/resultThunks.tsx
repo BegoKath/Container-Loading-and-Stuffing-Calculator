@@ -8,6 +8,7 @@ const volumenContainer = (): any => (dispatch: Dispatch, getState: any) => {
   const { width, heigth, long } = getState().container;
   const volumen = width * heigth * long;
   dispatch(resultActions.setVolumenContainer(volumen));
+ 
 };
 //calcula la cantidad de cajas y el espacio vacio en el contenedor
 const calculeBoxes = (
@@ -77,6 +78,7 @@ const calculeBoxes = (
 const resultUniqueBox =
   (values: IBox, boxes: IBox[]): any =>
   (dispatch: Dispatch, getState: any) => {
+    const { volumenContainer } = getState().result;
     const { width, heigth, long, weigthMax } = getState().container;
     const option1 = calculeBoxes(long, width, heigth, values);
     var numBoxes = 0;
@@ -105,12 +107,14 @@ const resultUniqueBox =
       }
       weigthBoxes = values.weigth * numBoxes;
     }
+    const volumenBox = values.height * values.width * values.long;
+    const percent = ( (volumenBox*numBoxes) / volumenContainer) * 100;
     const re: IResult = {
       numboxes: numBoxes,
       weightMax: weigthBoxes,
       units: unitsBoxes,
-      volumen: 0,
-      percent: 0,
+      volumen: volumenBox,
+      percent: percent,
     };
     values.result = re;
     const newBoxes = boxes.map((e: IBox): IBox => {
@@ -119,6 +123,12 @@ const resultUniqueBox =
       }
       return e;
     });
+    
+    const percentWeigth = (weigthBoxes / weigthMax) * 100;
+    dispatch(resultActions.setPercentVolumen(Number(percent.toFixed(2))));
+        dispatch(
+          resultActions.setPercentWeigth(Number(percentWeigth.toFixed(2)))
+        );
     dispatch(resultActions.setBoxes(newBoxes));
   };
 

@@ -1,4 +1,4 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import container1 from "../assets/container1.png";
 import container2 from "../assets/container2.png";
 import transport from "../assets/transport.png";
@@ -10,8 +10,11 @@ import { ContainerBoxes } from "./component/ContainerBoxes";
 import { IBox } from "../interfaces/Ibox";
 import { ContainerTransport } from "./component/ContainerTransport";
 import Progressbar from "./component/ProgressBar";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import { MyDocument } from "./PDF/resultsPDF";
 
 export const CalculatorScreen = () => {
+
   const {
     state: { isGold, boxes, isTransport, percentVolumen, percentWeigth },
     showWindowGold,
@@ -25,7 +28,6 @@ export const CalculatorScreen = () => {
     changeContainerReffer20FT,
     changeContainerReffer40FT,
     changeContainerReffer40HQ,
-    changeTransport,
   } = useContainer();
   const [typeContainer, setTypeContainer] = useState("DRY");
   const [measureContainer, setMeasureContainer] = useState("20FT");
@@ -58,16 +60,9 @@ export const CalculatorScreen = () => {
     }
     if (typeContainer === "TRANSPORT") {
       showTransportContainer(true);
-      changeTransport({
-        type: "Transporte Terrestre ",
-        measure: "",
-        width: 0,
-        heigth: 0,
-        long: 0,
-        weigthMax: 0,
-      });
     }
   };
+
   //identifica si la pagina es Gold
   useEffect(() => {
     const url = window.location.href;
@@ -82,7 +77,7 @@ export const CalculatorScreen = () => {
   //cambia la información del contenedor
   useEffect(() => {
     changeContainer();
-  }, [typeContainer, measureContainer, changeContainer, boxes, percentVolumen, percentWeigth]);
+  }, [typeContainer, measureContainer, changeContainer]);
   //desplega los resultados de las cajas
   const results = boxes.map((e: IBox) => {
     return (
@@ -92,11 +87,11 @@ export const CalculatorScreen = () => {
           (isGold ? "col-5 " : "col-12 ") +
           "justify-content-around border rounded-lg bg-white shadow-sm mx-1"
         }
-        style={{ width: isGold ? "200px" : "100%",padding:"10px" }}
+        style={{ width: isGold ? "200px" : "100%", padding: "10px" }}
         key={e.id}
       >
-        <p style={{ fontSize: "13px", color: "#6f85d9", textAlign:"center" }}>
-          {"Caja " + (e.id+1)}
+        <p style={{ fontSize: "13px", color: "#6f85d9", textAlign: "center" }}>
+          {"Caja " + (e.id + 1)}
         </p>
         <p style={{ fontSize: "13px", color: "#6f85d9" }}>
           {"Cajas: " + e.result.numboxes}
@@ -115,10 +110,10 @@ export const CalculatorScreen = () => {
     return (
       <>
         <div
-          className=" d-flex flex-column col-md-5 justify-content-center  px-2 py-2  shadow-sm mb-1 mt-2"
+          className=" d-flex flex-column col-md-5 justify-content-center  px-2 py-2  shadow-sm mb-1 mt-5"
           style={{
             backgroundColor: "#6f85d9",
-            width: isGold ? "90%" : "",
+            width: "90%",
             borderRadius: "10px",
           }}
         >
@@ -134,7 +129,7 @@ export const CalculatorScreen = () => {
           <div
             className="d-flex "
             style={{
-              flexDirection: isGold ? "row" : "column",
+              flexDirection: "row",
               justifyContent: "space-around",
             }}
           >
@@ -159,7 +154,7 @@ export const CalculatorScreen = () => {
       </>
     );
   }
-  return (
+  return (isGold?<PDFViewer style={{width:"100%", height:"99vh"}}><MyDocument contenedor={{type:type,measure:measure,width:width,heigth:heigth,long:long,weigthMax:weigthMax}} boxes={boxes}/></PDFViewer>:
     <Container style={page}>
       <Row className="w-100" style={{ border: "2px solid black" }}>
         <Col md className="col-md-6" style={cont1}>
@@ -316,7 +311,7 @@ export const CalculatorScreen = () => {
                 </>
               )}
             </div>
-            {isGold ? <InfoContainers /> : <></>}
+            <InfoContainers />
           </div>
         </Col>
         <Col
@@ -340,31 +335,55 @@ export const CalculatorScreen = () => {
           </Row>
 
           <ContainerBoxes />
-          <p style={{ fontSize: "20px", marginTop: "10px", height: "20px" }}>
-            Resultados
-          </p>
+          <div className="d-flex justify-content-between">
+            <p style={{ fontSize: "20px", marginTop: "10px", height: "20px" }}>
+              Resultados
+            </p>
+            <PDFDownloadLink
+              document={<MyDocument contenedor={{type:type,measure:measure,width:width,heigth:heigth,long:long,weigthMax:weigthMax}} boxes={boxes}/>}
+              fileName="ResultadosContenedor"
+            >
+              {({ loading }) =>
+                loading ? (
+                  <Button className="m-2" variant="info">
+                    {" "}
+                    Cargando
+                  </Button>
+                ) : (
+                  <Button className="m-2" variant="danger">
+                    PDF
+                  </Button>
+                )
+              }
+            </PDFDownloadLink>
+
+          </div>
+
           <div
             className="d-flex mb-2"
             style={{
-              flexDirection: isGold ? "column" : "row",
-              justifyContent:"space-around",
+              flexDirection: "column",
+              justifyContent: "space-around",
               alignItems: "space-around",
             }}
           >
-            {isGold ? (
-              <div>
-                <span style={{fontSize:"13px" }}>Volumen</span>
-                <Progressbar bgcolor="#2E9AFE" progress={percentVolumen.toString()} height={20} />
-                <span style={{fontSize:"13px" }}>Peso</span>
-                <Progressbar bgcolor="greenyellow" progress={percentWeigth.toString()} height={20} />
-              </div>
-            ) : (
-              <InfoContainers />
-            )}
-
+            <div>
+              <span style={{ fontSize: "13px" }}>Volumen</span>
+              <Progressbar
+                bgcolor="#2E9AFE"
+                progress={percentVolumen.toString()}
+                height={20}
+              />
+              <span style={{ fontSize: "13px" }}>Peso</span>
+              <Progressbar
+                bgcolor="greenyellow"
+                progress={percentWeigth.toString()}
+                height={20}
+              />
+            </div>
             <div
               className=" d-flex flex-column col-md-5 justify-content-center  mb-1"
-              style={{ width: isGold ? "100%" : "" }}
+              style={{ width: "100%" }}
             >
               <div className="container-fluid w-100 h-100">
                 <div

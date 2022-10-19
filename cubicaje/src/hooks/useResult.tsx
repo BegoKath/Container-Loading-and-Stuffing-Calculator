@@ -15,6 +15,8 @@ export const useResult = () => {
     dispatch(resultActions.setGold(gold));
   const showTransportContainer = (transport: boolean) =>
     dispatch(resultActions.setTransport(transport));
+
+  const resetStateResult = ()=> dispatch(resultActions.resetStateToDefault());
   return {
     state,
     resultUniqueBox,
@@ -22,5 +24,6 @@ export const useResult = () => {
     showWindowGold,
     resultMultiplesBoxes,
     showTransportContainer,
+    resetStateResult
   };
 };

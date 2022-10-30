@@ -19,15 +19,22 @@
     "@types/node": "^16.11.59",
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
+    "axios": "^1.1.3",
     "bootstrap": "^5.2.1",
     "buffer": "^6.0.3",
+    "crypto-js": "^4.1.1",
+    "querystring": "^0.2.1",
+    "querystring-es3": "^0.2.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.6.0",
     "react-redux": "^8.0.1",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.4.0",
     "react-scripts": "5.0.1",
+    "sweetalert2": "^11.6.4",
+    "sweetalert2-react-content": "^5.0.7",
     "typescript": "^4.8.3",
     "web-vitals": "^2.1.4"
   },
@@ -54,5 +61,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.1.1"
   }
 }

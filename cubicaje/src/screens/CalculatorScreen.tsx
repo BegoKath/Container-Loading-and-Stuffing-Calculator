@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Col, Container, Row } from "react-bootstrap";
 import container1 from "../assets/container1.png";
 import container2 from "../assets/container2.png";
@@ -10,15 +11,31 @@ import { ContainerBoxes } from "./component/ContainerBoxes";
 import { IBox } from "../interfaces/Ibox";
 import { ContainerTransport } from "./component/ContainerTransport";
 import Progressbar from "./component/ProgressBar";
-import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import { MyDocument } from "./PDF/resultsPDF";
+import { useLocation } from "react-router-dom";
+import { Keys } from "../constants/Keys";
+import { getCodeVerifierFromStorage } from "../utils/getCodeVerifierfromStorage";
+import { Alert } from "../utils/Alert";
+import { FaStar } from "react-icons/fa";
 
 export const CalculatorScreen = () => {
-
+  const location = useLocation();
   const {
-    state: { isGold, boxes, isTransport, percentVolumen, percentWeigth },
+    state: {
+      isGold,
+      boxes,
+      isTransport,
+      percentVolumen,
+      percentWeigth,
+      clientID,
+      response_type,
+      code_challenge_method,
+    },
     showWindowGold,
     showTransportContainer,
+    getAuthorization,
+    getCodes,
   } = useResult();
   const {
     state: { type, measure, width, heigth, long, weigthMax },
@@ -31,6 +48,9 @@ export const CalculatorScreen = () => {
   } = useContainer();
   const [typeContainer, setTypeContainer] = useState("DRY");
   const [measureContainer, setMeasureContainer] = useState("20FT");
+
+  const tiempoTranscurrido = Date.now();
+  const hoy = new Date(tiempoTranscurrido);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const changeContainer = () => {
@@ -59,21 +79,45 @@ export const CalculatorScreen = () => {
       }
     }
     if (typeContainer === "TRANSPORT") {
+      Alert.showWarning("Debe llenar todos los campos del contenedor.");
       showTransportContainer(true);
     }
   };
 
   //identifica si la pagina es Gold
-  useEffect(() => {
-    const url = window.location.href;
-    const urlParams = new URLSearchParams(url);
-    const gold = urlParams.get("gold");
-    if (gold != null) {
-      showWindowGold(true);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const authorization = async () => {
+    const pathname = location.pathname;
+    if (pathname === "/gold") {
+      const url = location.search;
+      const urlParams = new URLSearchParams(url);
+      const gold = urlParams.get("gold");
+      const code = urlParams.get("code");
+      if (gold != null) {
+        showWindowGold(true);
+        return;
+      } else {
+        showWindowGold(false);
+        var i = 0;
+        if (code != null) {
+          const cov = getCodeVerifierFromStorage() ?? "";
+          if (i === 0) {
+            getAuthorization(clientID, code, cov);
+          }
+          i++;
+        } else {
+          const res = await getCodes();
+          localStorage.setItem(Keys.CV, res.verifier);
+          window.location.href = `http://185.197.194.217/o/authorize/?client_id=${clientID}&response_type=${response_type}&code_challenge=${res.challege}&code_challenge_method=${code_challenge_method}`;
+        }
+      }
+    } else {
       return;
     }
-    showWindowGold(false);
-  }, [showWindowGold]);
+  };
+  useEffect(() => {
+    authorization();
+  }, []);
   //cambia la información del contenedor
   useEffect(() => {
     changeContainer();
@@ -154,7 +198,7 @@ export const CalculatorScreen = () => {
       </>
     );
   }
-  return (isGold?<PDFViewer style={{width:"100%", height:"99vh"}}><MyDocument contenedor={{type:type,measure:measure,width:width,heigth:heigth,long:long,weigthMax:weigthMax}} boxes={boxes}/></PDFViewer>:
+  return (
     <Container style={page}>
       <Row className="w-100" style={{ border: "2px solid black" }}>
         <Col md className="col-md-6" style={cont1}>
@@ -164,6 +208,17 @@ export const CalculatorScreen = () => {
           <Row className="text-center text-white" style={{ fontSize: "50px" }}>
             Calculadora
           </Row>
+          {isGold ? (
+            <div
+              className=" d-flex align-items-center text-center text-white"
+              style={{ fontSize: "15px" }}
+            >
+              Gold <FaStar className="m-1" />
+            </div>
+          ) : (
+            <></>
+          )}
+
           <div className="w-100 d-flex flex-column align-items-center justify-content-center mt-5">
             <Row
               className="text-center text-white "
@@ -339,24 +394,38 @@ export const CalculatorScreen = () => {
             <p style={{ fontSize: "20px", marginTop: "10px", height: "20px" }}>
               Resultados
             </p>
-            <PDFDownloadLink
-              document={<MyDocument contenedor={{type:type,measure:measure,width:width,heigth:heigth,long:long,weigthMax:weigthMax}} boxes={boxes}/>}
-              fileName="ResultadosContenedor"
-            >
-              {({ loading }) =>
-                loading ? (
-                  <Button className="m-2" variant="info">
-                    {" "}
-                    Cargando
-                  </Button>
-                ) : (
-                  <Button className="m-2" variant="danger">
-                    PDF
-                  </Button>
-                )
-              }
-            </PDFDownloadLink>
-
+            {isGold ? (
+              <PDFDownloadLink
+                document={
+                  <MyDocument
+                    contenedor={{
+                      type: type,
+                      measure: measure,
+                      width: width,
+                      heigth: heigth,
+                      long: long,
+                      weigthMax: weigthMax,
+                    }}
+                    boxes={boxes}
+                  />
+                }
+                fileName={hoy.toLocaleDateString()}
+              >
+                {({ loading }) =>
+                  loading ? (
+                    <Button className="m-2" variant="info">
+                      Cargando
+                    </Button>
+                  ) : (
+                    <Button className="m-2" variant="danger">
+                      PDF
+                    </Button>
+                  )
+                }
+              </PDFDownloadLink>
+            ) : (
+              <></>
+            )}
           </div>
 
           <div

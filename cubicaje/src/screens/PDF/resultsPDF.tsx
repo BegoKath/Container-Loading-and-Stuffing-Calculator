@@ -60,7 +60,8 @@ interface Props {
 export const MyDocument = ({ contenedor, boxes }: Props) => {
   const datos = boxes.map((e: IBox) => {
     return (
-      <View style={styles.sectionBox}>
+      e.update?
+      <View style={styles.sectionBox} key={e.id}>
         <Text style={{ marginBottom: 5, textAlign: "center" }}>
           {"Caja " + (e.id + 1)}
         </Text>
@@ -105,12 +106,12 @@ export const MyDocument = ({ contenedor, boxes }: Props) => {
             {"Peso Bruto: " + e.result.weightMax}
           </Text>
         </View>
-      </View>
+      </View>:<></>
     );
   });
 
   return (
-    <Document>
+    <Document >
       <Page size="A4" style={styles.page}>
         <View style={styles.sectionLogo}>
           <Image src={logo} style={{ height: "50px" }} />

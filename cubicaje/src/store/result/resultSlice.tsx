@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IBox } from "../../interfaces/Ibox";
 import {IResult} from "../../interfaces/IResult";
 
+
 export interface IResultState {
   boxes: IBox[];
   numStep:number;
@@ -10,6 +11,11 @@ export interface IResultState {
   isTransport:boolean;
   percentVolumen:number,
   percentWeigth:number,
+ 
+  clientID:string,
+  response_type:string,
+  code_challenge_method:string,
+ 
 }
 const result:IResult={
   numboxes:0,
@@ -33,7 +39,11 @@ export const defaultState: IResultState = {
   percentWeigth:0,
   numStep:0,
   isGold:false,
-  isTransport:false
+  isTransport:false,
+  clientID:'a5ecJGeXYcjULjmu48aqqFoy4GjiZvun1H1Ef9Ui',
+  response_type:'code',
+  code_challenge_method:'S256',
+  
 };
 const initialState: IResultState = defaultState;
 
@@ -62,6 +72,7 @@ export const resultSlice = createSlice({
     setTransport: (state, action: PayloadAction<boolean>) => {
       state.isTransport = action.payload;
     },
+   
     resetStateToDefault: () => {
       return defaultState;
     },

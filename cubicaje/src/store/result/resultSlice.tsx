@@ -10,12 +10,11 @@ export interface IResultState {
   isGold:boolean;
   isTransport:boolean;
   percentVolumen:number,
-  percentWeigth:number,
- 
+  percentWeigth:number, 
   clientID:string,
   response_type:string,
   code_challenge_method:string,
- 
+  optBox:boolean 
 }
 const result:IResult={
   numboxes:0,
@@ -43,7 +42,7 @@ export const defaultState: IResultState = {
   clientID:'a5ecJGeXYcjULjmu48aqqFoy4GjiZvun1H1Ef9Ui',
   response_type:'code',
   code_challenge_method:'S256',
-  
+  optBox:false
 };
 const initialState: IResultState = defaultState;
 
@@ -72,7 +71,9 @@ export const resultSlice = createSlice({
     setTransport: (state, action: PayloadAction<boolean>) => {
       state.isTransport = action.payload;
     },
-   
+    setOptBox: (state, action: PayloadAction<boolean>) => {
+      state.optBox = action.payload;
+    },
     resetStateToDefault: () => {
       return defaultState;
     },

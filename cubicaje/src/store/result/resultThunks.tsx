@@ -75,26 +75,35 @@ const calculeBoxes = (
 
   return { numBoxes, space, index1 };
 };
+
 //calcula cuantas cajas pueden entrar de una sola medida
 const resultUniqueBox =
-  (values: IBox, boxes: IBox[]): any =>
+  (values: IBox, boxes: IBox[], optBox: boolean): any =>
   (dispatch: Dispatch, getState: any) => {
     try {
       const { volumenContainer } = getState().result;
       const { width, heigth, long, weigthMax } = getState().container;
-      const option1 = calculeBoxes(long, width, heigth, values);
       var numBoxes = 0;
-      if (option1.index1 === 0) {
-        const option2 = calculeBoxes(option1.space, width, heigth, values);
-        numBoxes = option1.numBoxes + option2.numBoxes;
-      }
-      if (option1.index1 === 1) {
-        const option2 = calculeBoxes(long, option1.space, heigth, values);
-        numBoxes = option1.numBoxes + option2.numBoxes;
-      }
-      if (option1.index1 === 2) {
-        const option2 = calculeBoxes(long, width, option1.space, values);
-        numBoxes = option1.numBoxes + option2.numBoxes;
+      if (optBox) {
+        const option1 = calculeBoxes(long, width, heigth, values);
+
+        if (option1.index1 === 0) {
+          const option2 = calculeBoxes(option1.space, width, heigth, values);
+          numBoxes = option1.numBoxes + option2.numBoxes;
+        }
+        if (option1.index1 === 1) {
+          const option2 = calculeBoxes(long, option1.space, heigth, values);
+          numBoxes = option1.numBoxes + option2.numBoxes;
+        }
+        if (option1.index1 === 2) {
+          const option2 = calculeBoxes(long, width, option1.space, values);
+          numBoxes = option1.numBoxes + option2.numBoxes;
+        }
+      } else {
+        const w= parseInt((width/values.width).toString());
+        const l= parseInt((long/values.long).toString());
+        const h=parseInt((heigth/values.height).toString());
+        numBoxes= w*l*h;
       }
       var weigthBoxes = values.weigth * numBoxes;
       const unitsBoxes = values.units * numBoxes;
@@ -110,10 +119,11 @@ const resultUniqueBox =
         weigthBoxes = values.weigth * numBoxes;
       }
       const volumenBox = values.height * values.width * values.long;
-      const percent = ((volumenBox * numBoxes) / volumenContainer) * 100;      
+      const percent = ((volumenBox * numBoxes) / volumenContainer) * 100;
       const newBoxes = boxes.map((e: IBox): IBox => {
         if (e.id === values.id) {
-          const obj= Object.freeze({id: values.id,
+          const obj = Object.freeze({
+            id: values.id,
             height: values.height,
             width: values.width,
             weigth: values.weigth,
@@ -123,16 +133,16 @@ const resultUniqueBox =
             units: values.units,
             result: {
               numboxes: numBoxes,
-        weightMax: weigthBoxes,
-        units: unitsBoxes,
-        volumen: volumenBox,
-        percent: percent,
-            },});
-            e=obj;
+              weightMax: weigthBoxes,
+              units: unitsBoxes,
+              volumen: volumenBox,
+              percent: percent,
+            },
+          });
+          e = obj;
         }
         return e;
       });
-
       const percentWeigth = (weigthBoxes / weigthMax) * 100;
       dispatch(resultActions.setPercentVolumen(Number(percent.toFixed(2))));
       dispatch(
@@ -140,9 +150,7 @@ const resultUniqueBox =
       );
       dispatch(resultActions.setBoxes(newBoxes));
     } catch (error) {
-      
       Alert.showError("Por favor verifique los datos de la caja.");
-
     }
   };
 

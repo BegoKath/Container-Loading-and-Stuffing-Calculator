@@ -13,8 +13,8 @@ export const useResult = () => {
   const state = useSelector((state: any) => state.result) as IResultState;
   const dispatch = useDispatch();
   const volumenContainer = () => dispatch(resultThunks.volumenContainer());
-  const resultUniqueBox = (values: IBox) =>
-    dispatch(resultThunks.resultUniqueBox(values, state.boxes));
+  const resultUniqueBox = (values: IBox,optBox:boolean) =>
+    dispatch(resultThunks.resultUniqueBox(values, state.boxes,optBox));
   const resultMultiplesBoxes = (values: IBox, update: boolean) =>
     dispatch(resultThunks.resultMultiplesBoxes(state.boxes, values, update));
   const showWindowGold = (gold: boolean) =>
@@ -62,6 +62,7 @@ export const useResult = () => {
     str=str.replace("=","");    
     return str;
   }
+  const setOptBox = (opt:boolean)=> dispatch(resultActions.setOptBox(opt));
   return {
     state,
     resultUniqueBox,
@@ -73,6 +74,7 @@ export const useResult = () => {
     setCodeVerifier,
     codeChallenge,
     getAuthorization,
-    getCodes
+    getCodes,
+    setOptBox
   };
 };

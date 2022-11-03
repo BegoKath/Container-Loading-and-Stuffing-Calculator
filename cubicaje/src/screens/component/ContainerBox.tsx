@@ -7,7 +7,7 @@ import { Alert } from "../../utils/Alert";
 
 export const ContainerBox = (boxItem: IBox) => {
   const {
-    state: { isGold },
+    state: { isGold,optBox},
     resultMultiplesBoxes,
   } = useResult();
   const [values, setValues] = useState<IBox>({
@@ -21,6 +21,7 @@ export const ContainerBox = (boxItem: IBox) => {
     units:boxItem.units,
     result: boxItem.result,
   });
+  
   const { resultUniqueBox } = useResult();
   const handleChange =
     (prop: keyof IBox) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -40,10 +41,9 @@ export const ContainerBox = (boxItem: IBox) => {
           resultMultiplesBoxes(values,update);
         }else{
          Alert.showError("Debe ingresar todos los campos de la caja.")        
-        }
-        
+        }        
       }else{
-        resultUniqueBox(values);
+        resultUniqueBox(values,optBox);
       }
     } else {
       Alert.showError("Debe ingresar todos los campos de la caja.")  

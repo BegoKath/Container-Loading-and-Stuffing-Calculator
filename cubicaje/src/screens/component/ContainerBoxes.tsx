@@ -4,6 +4,7 @@ import {
   useTheme,
   Box,
   Typography,
+  Switch,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useResult } from "../../hooks/useResult";
@@ -43,9 +44,10 @@ function TabPanel(props: TabPanelProps) {
 export const ContainerBoxes = () => {
   const theme = useTheme();
   const {
-    state: { isGold, boxes,numStep },
+    state: { isGold, boxes,numStep,optBox },setOptBox
   } = useResult();
   const [activeStep, setActiveStep] = useState(numStep);
+  
   const maxSteps = boxes.length;
 
   const handleNext = () => {
@@ -63,6 +65,8 @@ export const ContainerBoxes = () => {
       </TabPanel>
     );
   };
+  const handleChangeChecked=(event: React.ChangeEvent<HTMLInputElement>)=>{
+    setOptBox(event.target.checked);}
   useEffect(()=>{
     setActiveStep(numStep)
   },[numStep])
@@ -85,7 +89,7 @@ export const ContainerBoxes = () => {
           style={{ border: "0px solid" }}
         />
         <span style={{color:"#465489"}}>{"Caja " + (activeStep + 1)}</span>
-        {isGold&&
+        {isGold?
         <MobileStepper
           steps={maxSteps}
           position="static"
@@ -120,7 +124,14 @@ export const ContainerBoxes = () => {
               
             </Button>
           }
-        />}
+        />:(<label>
+          <span>Optimizar las cajas</span>
+          <Switch
+            onChange={handleChangeChecked}
+            checked={optBox}
+          />
+        </label>)}
+        
       </Col>
       <Col
         md

@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useResult } from "../../hooks/useResult";
 import { IBox } from "../../interfaces/Ibox";
+import { Alert } from "../../utils/Alert";
 
 export const ContainerBox = (boxItem: IBox) => {
   const {
@@ -23,7 +24,7 @@ export const ContainerBox = (boxItem: IBox) => {
   const { resultUniqueBox } = useResult();
   const handleChange =
     (prop: keyof IBox) => (event: ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
+      setValues({ ...values, [prop]: Number(event.target.value) });
     };
   const calcule = () => {
     if (
@@ -38,14 +39,14 @@ export const ContainerBox = (boxItem: IBox) => {
           const update=values.update;
           resultMultiplesBoxes(values,update);
         }else{
-          console.log("falta items");
+         Alert.showError("Debe ingresar todos los campos de la caja.")        
         }
         
       }else{
         resultUniqueBox(values);
       }
     } else {
-      console.log("falta items");
+      Alert.showError("Debe ingresar todos los campos de la caja.")  
     }
   };
   return (

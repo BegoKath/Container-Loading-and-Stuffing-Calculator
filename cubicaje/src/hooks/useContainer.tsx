@@ -12,7 +12,7 @@ export const useContainer = () => {
   const changeContainerDry20FT = () => {
     dispatch(containerActions.setType("Contenedor Seco o Dry "));
     dispatch(containerActions.setMeasure("20FT"));
-    dispatch(containerActions.setWidth(2350));
+    dispatch(containerActions.setWidth(2352));
     dispatch(containerActions.setHeigth(2393));
     dispatch(containerActions.setLong(5895));
     dispatch(containerActions.setWeigthMax(28200));

@@ -18,6 +18,7 @@ import { Keys } from "../constants/Keys";
 import { getCodeVerifierFromStorage } from "../utils/getCodeVerifierfromStorage";
 import { Alert } from "../utils/Alert";
 import { FaStar } from "react-icons/fa";
+import { Switch } from "@mui/material";
 
 export const CalculatorScreen = () => {
   const location = useLocation();
@@ -48,9 +49,12 @@ export const CalculatorScreen = () => {
   } = useContainer();
   const [typeContainer, setTypeContainer] = useState("DRY");
   const [measureContainer, setMeasureContainer] = useState("20FT");
-
+  const [mode, setMode] = useState("FREE");
+  const [checked,setChecked]=useState(false);
+  const [transportI, setTransport]=useState(false);
   const tiempoTranscurrido = Date.now();
   const hoy = new Date(tiempoTranscurrido);
+ 
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const changeContainer = () => {
@@ -79,11 +83,22 @@ export const CalculatorScreen = () => {
       }
     }
     if (typeContainer === "TRANSPORT") {
-      Alert.showWarning("Debe llenar todos los campos del contenedor.");
       showTransportContainer(true);
     }
   };
-
+  const handleChangeChecked=(event: React.ChangeEvent<HTMLInputElement>)=>{
+    setChecked(event.target.checked);
+    if(event.target.checked){
+      if(mode==="FREE"){
+        Alert.showWarning('Mejora a simulador GOLD');
+        setChecked(false);
+      }else{
+        showWindowGold(true);
+      }
+    }else{
+      showWindowGold(false);
+    }
+  }
   //identifica si la pagina es Gold
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const authorization = async () => {
@@ -94,7 +109,9 @@ export const CalculatorScreen = () => {
       const gold = urlParams.get("gold");
       const code = urlParams.get("code");
       if (gold != null) {
-        showWindowGold(true);
+        showWindowGold(true);   
+        setMode("GOLD");
+        setChecked(true);
         return;
       } else {
         showWindowGold(false);
@@ -102,7 +119,7 @@ export const CalculatorScreen = () => {
         if (code != null) {
           const cov = getCodeVerifierFromStorage() ?? "";
           if (i === 0) {
-            getAuthorization(clientID, code, cov);
+            getAuthorization(clientID, code, cov);            
           }
           i++;
         } else {
@@ -120,6 +137,12 @@ export const CalculatorScreen = () => {
   }, []);
   //cambia la información del contenedor
   useEffect(() => {
+    if(typeContainer==="TRANSPORT"){     
+      if(!transportI){
+        Alert.showWarning("Debe ingresar todos los datos del contenedor.");    
+        setTransport(true);
+      }        
+    }
     changeContainer();
   }, [typeContainer, measureContainer, changeContainer]);
   //desplega los resultados de las cajas
@@ -381,8 +404,15 @@ export const CalculatorScreen = () => {
           }}
         >
           <Row>
-            <div className=" d-flex flex-column col-8 justify-content-center align-items-center">
+            <div className=" d-flex flex-column col-8 justify-content-around align-items-start">
               <p style={{ fontSize: "20px" }}>Carga</p>
+              <label>
+                <span>{checked?"Multiples Cajas":"Unica Caja"}</span>
+                <Switch
+                  onChange={handleChangeChecked}
+                  checked={checked}
+                />
+              </label>
             </div>
             <div className=" d-flex flex-column col-4  justify-content-center align-items-center">
               <img src={logo} alt="logo" height={"60px"} />

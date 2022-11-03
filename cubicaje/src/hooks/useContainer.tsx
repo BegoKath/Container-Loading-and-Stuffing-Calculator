@@ -12,55 +12,55 @@ export const useContainer = () => {
   const changeContainerDry20FT = () => {
     dispatch(containerActions.setType("Contenedor Seco o Dry "));
     dispatch(containerActions.setMeasure("20FT"));
-    dispatch(containerActions.setWidth(2352));
-    dispatch(containerActions.setHeigth(2393));
-    dispatch(containerActions.setLong(5895));
-    dispatch(containerActions.setWeigthMax(28200));
+    dispatch(containerActions.setWidth(2345));
+    dispatch(containerActions.setHeigth(2400));
+    dispatch(containerActions.setLong(5900));
+    dispatch(containerActions.setWeigthMax(28240));
     volumenContainer();
   };
   const changeContainerDry40FT = () => {
     dispatch(containerActions.setType("Contenedor Seco o Dry "));
     dispatch(containerActions.setMeasure("40FT"));
-    dispatch(containerActions.setWidth(2352));
-    dispatch(containerActions.setHeigth(2393));
-    dispatch(containerActions.setLong(12032));
-    dispatch(containerActions.setWeigthMax(28750));
+    dispatch(containerActions.setWidth(2345));
+    dispatch(containerActions.setHeigth(2400));
+    dispatch(containerActions.setLong(12030));
+    dispatch(containerActions.setWeigthMax(26850));
     volumenContainer();
   };
   const changeContainerDry40HQ = () => {
     dispatch(containerActions.setType("Contenedor Seco o Dry "));
     dispatch(containerActions.setMeasure("40HQ"));
-    dispatch(containerActions.setWidth(2352));
-    dispatch(containerActions.setHeigth(2698));
-    dispatch(containerActions.setLong(12032));
-    dispatch(containerActions.setWeigthMax(28560));
+    dispatch(containerActions.setWidth(2350));
+    dispatch(containerActions.setHeigth(2710));
+    dispatch(containerActions.setLong(12030));
+    dispatch(containerActions.setWeigthMax(26600));
     volumenContainer();
   };
   const changeContainerReffer20FT = () => {
     dispatch(containerActions.setType("Contenedor Refrigerado "));
     dispatch(containerActions.setMeasure("20FT"));
-    dispatch(containerActions.setWidth(2225));
-    dispatch(containerActions.setHeigth(2169));
-    dispatch(containerActions.setLong(5025));
-    dispatch(containerActions.setWeigthMax(27400));
+    dispatch(containerActions.setWidth(2285));
+    dispatch(containerActions.setHeigth(2255));
+    dispatch(containerActions.setLong(5500));
+    dispatch(containerActions.setWeigthMax(27280));
     volumenContainer();
   };
   const changeContainerReffer40FT = () => {
     dispatch(containerActions.setType("Contenedor Refrigerado "));
     dispatch(containerActions.setMeasure("40FT"));
-    dispatch(containerActions.setWidth(2225));
-    dispatch(containerActions.setHeigth(2169));
-    dispatch(containerActions.setLong(10050));
-    dispatch(containerActions.setWeigthMax(27700));
+    dispatch(containerActions.setWidth(2285));
+    dispatch(containerActions.setHeigth(2250));
+    dispatch(containerActions.setLong(11575));
+    dispatch(containerActions.setWeigthMax(30400));
     volumenContainer();
   };
   const changeContainerReffer40HQ = () => {
     dispatch(containerActions.setType("Contenedor Refrigerado "));
     dispatch(containerActions.setMeasure("40HQ"));
-    dispatch(containerActions.setWidth(2286));
-    dispatch(containerActions.setHeigth(2532));
-    dispatch(containerActions.setLong(12571));
-    dispatch(containerActions.setWeigthMax(29520));
+    dispatch(containerActions.setWidth(2290));
+    dispatch(containerActions.setHeigth(2550));
+    dispatch(containerActions.setLong(11575));
+    dispatch(containerActions.setWeigthMax(29250));
     volumenContainer();
   };
   const changeTransport = (values:IContainerState) => {

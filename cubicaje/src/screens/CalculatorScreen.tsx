@@ -4,6 +4,7 @@ import container1 from "../assets/container1.png";
 import container2 from "../assets/container2.png";
 import transport from "../assets/transport.png";
 import logo from "../assets/logo.png";
+
 import { useContainer } from "../hooks/useContainer";
 import { useEffect, useState } from "react";
 import { useResult } from "../hooks/useResult";
@@ -90,7 +91,7 @@ export const CalculatorScreen = () => {
     setChecked(event.target.checked);
     if(event.target.checked){
       if(mode==="FREE"){
-        Alert.showWarning('Mejora a simulador GOLD');
+        Alert.advertising();
         setChecked(false);
       }else{
         showWindowGold(true);

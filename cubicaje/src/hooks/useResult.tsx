@@ -63,6 +63,8 @@ export const useResult = () => {
     return str;
   }
   const setOptBox = (opt:boolean)=> dispatch(resultActions.setOptBox(opt));
+
+  const resetStateBoxes= ()=> dispatch(resultActions.resetStateBoxes());
   return {
     state,
     resultUniqueBox,
@@ -75,6 +77,7 @@ export const useResult = () => {
     codeChallenge,
     getAuthorization,
     getCodes,
-    setOptBox
+    setOptBox,
+    resetStateBoxes
   };
 };

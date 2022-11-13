@@ -38,6 +38,7 @@ export const CalculatorScreen = () => {
     showTransportContainer,
     getAuthorization,
     getCodes,
+    resetStateBoxes,
   } = useResult();
   const {
     state: { type, measure, width, heigth, long, weigthMax },
@@ -51,55 +52,55 @@ export const CalculatorScreen = () => {
   const [typeContainer, setTypeContainer] = useState("DRY");
   const [measureContainer, setMeasureContainer] = useState("20FT");
   const [mode, setMode] = useState("FREE");
-  const [checked,setChecked]=useState(false);
-  const [transportI, setTransport]=useState(false);
+  const [checked, setChecked] = useState(false);
+  const [transportI, setTransport] = useState(false);
   const tiempoTranscurrido = Date.now();
   const hoy = new Date(tiempoTranscurrido);
- 
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const changeContainer = () => {
-    if (typeContainer === "DRY") {
-      showTransportContainer(false);
-      if (measureContainer === "20FT") {
-        changeContainerDry20FT();
+  const changeContainer = () => {    
+      if (typeContainer === "DRY") {
+        showTransportContainer(false);
+        if (measureContainer === "20FT") {
+          changeContainerDry20FT();
+        }
+        if (measureContainer === "40FT") {
+          changeContainerDry40FT();
+        }
+        if (measureContainer === "40HQ") {
+          changeContainerDry40HQ();
+        }
       }
-      if (measureContainer === "40FT") {
-        changeContainerDry40FT();
+      if (typeContainer === "REFFER") {
+        showTransportContainer(false);
+        if (measureContainer === "20FT") {
+          changeContainerReffer20FT();
+        }
+        if (measureContainer === "40FT") {
+          changeContainerReffer40FT();
+        }
+        if (measureContainer === "40HQ") {
+          changeContainerReffer40HQ();
+        }
       }
-      if (measureContainer === "40HQ") {
-        changeContainerDry40HQ();
+      if (typeContainer === "TRANSPORT") {
+        showTransportContainer(true);
       }
-    }
-    if (typeContainer === "REFFER") {
-      showTransportContainer(false);
-      if (measureContainer === "20FT") {
-        changeContainerReffer20FT();
-      }
-      if (measureContainer === "40FT") {
-        changeContainerReffer40FT();
-      }
-      if (measureContainer === "40HQ") {
-        changeContainerReffer40HQ();
-      }
-    }
-    if (typeContainer === "TRANSPORT") {
-      showTransportContainer(true);
-    }
+    
   };
-  const handleChangeChecked=(event: React.ChangeEvent<HTMLInputElement>)=>{
+  const handleChangeChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
-    if(event.target.checked){
-      if(mode==="FREE"){
+    if (event.target.checked) {
+      if (mode === "FREE") {
         Alert.advertising();
         setChecked(false);
-      }else{
+      } else {
         showWindowGold(true);
       }
-    }else{
+    } else {
       showWindowGold(false);
     }
-  }
+  };
   //identifica si la pagina es Gold
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const authorization = async () => {
@@ -110,8 +111,12 @@ export const CalculatorScreen = () => {
       const gold = urlParams.get("gold");
       const code = urlParams.get("code");
       if (gold != null) {
-        showWindowGold(true);   
+        showWindowGold(true);
         setMode("GOLD");
+        await Alert.showSuccess({
+          title: "Bienvenido",
+          message: "Simulador Gold",
+        });
         setChecked(true);
         return;
       } else {
@@ -120,7 +125,7 @@ export const CalculatorScreen = () => {
         if (code != null) {
           const cov = getCodeVerifierFromStorage() ?? "";
           if (i === 0) {
-            getAuthorization(clientID, code, cov);            
+            getAuthorization(clientID, code, cov);
           }
           i++;
         } else {
@@ -138,14 +143,14 @@ export const CalculatorScreen = () => {
   }, []);
   //cambia la información del contenedor
   useEffect(() => {
-    if(typeContainer==="TRANSPORT"){     
-      if(!transportI){
-        Alert.showWarning("Debe ingresar todos los datos del contenedor.");    
+    if (typeContainer === "TRANSPORT") {
+      if (!transportI) {
+        Alert.showWarning("Debe ingresar todos los datos del contenedor.");
         setTransport(true);
-      }        
+      }
     }
     changeContainer();
-  }, [typeContainer, measureContainer, changeContainer]);
+  }, [typeContainer, measureContainer]);
   //desplega los resultados de las cajas
   const results = boxes.map((e: IBox) => {
     return (
@@ -173,6 +178,51 @@ export const CalculatorScreen = () => {
       </div>
     );
   });
+  const changeType=(type:string,value:string)=>{
+    if(type==="tipo"){
+      if (boxes.length > 1) {
+        Alert.mySwal
+          .fire({
+            title: "¿Seguro que quieres perder información de la carga?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Eliminar",
+            denyButtonText:"Cancelar"
+          })
+          .then((result) => {
+            if (result.isConfirmed) {
+              resetStateBoxes();
+              setTypeContainer(value);
+            }
+          });       
+      }else{
+        setTypeContainer(value);
+      }
+    }else if(type==="medidas"){
+      if (boxes.length > 1) {
+        Alert.mySwal
+          .fire({
+            title: "¿Seguro que quieres perder información de la carga?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Eliminar",
+            denyButtonText:"Cancelar"
+          })
+          .then((result) => {
+            if (result.isConfirmed) {
+              resetStateBoxes();
+              setMeasureContainer(value);
+            }
+          });       
+      }else{
+        setMeasureContainer(value);
+      }
+    }
+  }
   //desplega la información de los contenedores
   function InfoContainers() {
     return (
@@ -232,14 +282,16 @@ export const CalculatorScreen = () => {
           <Row className="text-center text-white" style={{ fontSize: "50px" }}>
             Cubicador Aduanero
           </Row>
-          {mode==="FREE"?<></>: (
+          {mode === "FREE" ? (
+            <></>
+          ) : (
             <div
               className=" d-flex align-items-center text-center text-white"
               style={{ fontSize: "15px" }}
             >
               GOLD <FaStar className="m-1" />
             </div>
-          ) }
+          )}
 
           <div className="w-100 d-flex flex-column align-items-center justify-content-center mt-5">
             <Row
@@ -266,7 +318,7 @@ export const CalculatorScreen = () => {
                   type="radio"
                   name="type"
                   onClick={() => {
-                    setTypeContainer("DRY");
+                    changeType("tipo","DRY");
                   }}
                   defaultChecked
                 />
@@ -294,7 +346,8 @@ export const CalculatorScreen = () => {
                   type="radio"
                   name="type"
                   onClick={() => {
-                    setTypeContainer("REFFER");
+                    changeType("tipo","REFFER");
+                   
                   }}
                 />
                 <p
@@ -321,7 +374,8 @@ export const CalculatorScreen = () => {
                   type="radio"
                   name="type"
                   onClick={() => {
-                    setTypeContainer("TRANSPORT");
+                    
+                    changeType("tipo","TRANSPORT");
                   }}
                 />
                 <p
@@ -363,8 +417,8 @@ export const CalculatorScreen = () => {
                   <input
                     type="radio"
                     name="measure"
-                    onClick={() => {
-                      setMeasureContainer("20FT");
+                    onClick={() => {                      
+                      changeType("medidas","20FT");
                     }}
                     defaultChecked
                   />
@@ -373,7 +427,7 @@ export const CalculatorScreen = () => {
                     type="radio"
                     name="measure"
                     onClick={() => {
-                      setMeasureContainer("40FT");
+                      changeType("medidas","40FT");                      
                     }}
                   />
                   <p className="m-1">40 FT</p>
@@ -381,7 +435,7 @@ export const CalculatorScreen = () => {
                     type="radio"
                     name="measure"
                     onClick={() => {
-                      setMeasureContainer("40HQ");
+                      changeType("medidas","40HQ");                      
                     }}
                   />
                   <p className="m-1">40 HQ</p>
@@ -406,11 +460,8 @@ export const CalculatorScreen = () => {
             <div className=" d-flex flex-column col-8 justify-content-around align-items-start">
               <p style={{ fontSize: "20px" }}>Carga</p>
               <label>
-                <span>{checked?"Multiples Cajas":"Unica Caja"}</span>
-                <Switch
-                  onChange={handleChangeChecked}
-                  checked={checked}
-                />
+                <span>{checked ? "Multiples Cajas" : "Unica Caja"}</span>
+                <Switch onChange={handleChangeChecked} checked={checked} />
               </label>
             </div>
             <div className=" d-flex flex-column col-4  justify-content-center align-items-center">
@@ -423,7 +474,7 @@ export const CalculatorScreen = () => {
             <p style={{ fontSize: "20px", marginTop: "10px", height: "20px" }}>
               Resultados
             </p>
-            {isGold ? (
+            {mode === "GOLD" ? (
               <PDFDownloadLink
                 document={
                   <MyDocument

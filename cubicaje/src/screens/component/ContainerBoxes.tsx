@@ -47,9 +47,14 @@ export const ContainerBoxes = () => {
     state: { isGold, boxes,numStep,optBox },setOptBox
   } = useResult();
   const [activeStep, setActiveStep] = useState(numStep);
+  const [maxSteps,setMaxSteps]= useState(boxes.length)
   
-  const maxSteps = boxes.length;
-
+  useEffect(()=>{
+     setMaxSteps(boxes.length);
+     if(boxes.length===1){
+      setActiveStep(0);
+     }
+  },[boxes]);
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };

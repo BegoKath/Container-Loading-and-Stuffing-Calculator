@@ -74,6 +74,19 @@ export const resultSlice = createSlice({
     setOptBox: (state, action: PayloadAction<boolean>) => {
       state.optBox = action.payload;
     },
+    resetStateBoxes:(state)=>{
+      state.boxes=[{ id:0,
+        width:0,
+        height:0,
+        long:0,
+        quantity:0,
+        weigth:0,
+        units:0,
+        update:false,
+        result:result}];
+        state.percentVolumen=0;
+        state.percentWeigth=0;
+    },
     resetStateToDefault: () => {
       return defaultState;
     },

@@ -273,10 +273,7 @@ const getAuthorization =
       return;
     }
     if (res.access_token) {
-      await Alert.showSuccess({
-        title: "Bienvenido",
-        message: "Simulador Gold",
-      });
+      
       window.location.href = `http://localhost:3000/gold?gold=${res.access_token}`;
     }
   };

@@ -33,7 +33,7 @@ const {changeTransport}= useContainer();
           type="number"
           style={{ marginBottom: "10px" }}
           InputProps={{
-            endAdornment: <InputAdornment position="end">mm</InputAdornment>,
+            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
           }}
         />
         <TextField
@@ -44,7 +44,7 @@ const {changeTransport}= useContainer();
           type="number"
         
           InputProps={{
-            endAdornment: <InputAdornment position="end">mm</InputAdornment>,
+            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
           }}
         />
       </div>
@@ -57,7 +57,7 @@ const {changeTransport}= useContainer();
           type="number"
           style={{ marginBottom: "10px" }}
           InputProps={{
-            endAdornment: <InputAdornment position="end">mm</InputAdornment>,
+            endAdornment: <InputAdornment position="end">cm</InputAdornment>,
           }}
         />
         <TextField

@@ -67,7 +67,7 @@ export const ContainerBox = (boxItem: IBox) => {
         type="number"
         style={{ marginBottom: "10px" }}
         InputProps={{
-          endAdornment: <InputAdornment position="end">mm</InputAdornment>,
+          endAdornment: <InputAdornment position="end">cm</InputAdornment>,
         }}
       />
 
@@ -80,7 +80,7 @@ export const ContainerBox = (boxItem: IBox) => {
         type="number"
         style={{ marginBottom: "10px" }}
         InputProps={{
-          endAdornment: <InputAdornment position="end">mm</InputAdornment>,
+          endAdornment: <InputAdornment position="end">cm</InputAdornment>,
         }}
       />
 
@@ -93,7 +93,7 @@ export const ContainerBox = (boxItem: IBox) => {
         type="number"
         style={{ marginBottom: "10px" }}
         InputProps={{
-          endAdornment: <InputAdornment position="end">mm</InputAdornment>,
+          endAdornment: <InputAdornment position="end">cm</InputAdornment>,
         }}
       />
 

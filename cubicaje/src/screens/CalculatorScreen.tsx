@@ -203,15 +203,15 @@ export const CalculatorScreen = () => {
           >
             <div className="d-flex flex-column">
               <p style={{ fontSize: "15px", color: "white" }}>
-                {"Largo: " + long + " mm"}
+                {"Largo: " + long + " cm"}
               </p>
               <p style={{ fontSize: "15px", color: "white" }}>
-                {"Ancho: " + width + " mm"}
+                {"Ancho: " + width + " cm"}
               </p>
             </div>
             <div className="d-flex flex-column">
               <p style={{ fontSize: "15px", color: "white" }}>
-                {"Alto: " + heigth + " mm"}
+                {"Alto: " + heigth + " cm"}
               </p>
               <p style={{ fontSize: "15px", color: "white" }}>
                 {"Peso Max: " + weigthMax + " Kg"}
@@ -230,18 +230,16 @@ export const CalculatorScreen = () => {
             Cubicaje de contenedores
           </Row>
           <Row className="text-center text-white" style={{ fontSize: "50px" }}>
-            Calculadora
+            Cubicador Aduanero
           </Row>
-          {isGold ? (
+          {mode==="FREE"?<></>: (
             <div
               className=" d-flex align-items-center text-center text-white"
               style={{ fontSize: "15px" }}
             >
-              Gold <FaStar className="m-1" />
+              GOLD <FaStar className="m-1" />
             </div>
-          ) : (
-            <></>
-          )}
+          ) }
 
           <div className="w-100 d-flex flex-column align-items-center justify-content-center mt-5">
             <Row

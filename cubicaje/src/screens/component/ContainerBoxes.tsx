@@ -125,7 +125,7 @@ export const ContainerBoxes = () => {
             </Button>
           }
         />:(<label>
-          <span>Optimizar las cajas</span>
+          <span>Optimizar el espacio</span>
           <Switch
             onChange={handleChangeChecked}
             checked={optBox}

@@ -101,12 +101,12 @@ const resultUniqueBox =
         }
       } else {
         const w= parseInt((width/values.width).toString());
-        const l= parseInt((long/values.long).toString());
-        const h=parseInt((heigth/values.height).toString());
+        const l= parseInt((long/values.long).toString());      
+        const h=parseInt((heigth/values.height).toString());        
         numBoxes= w*l*h;
       }
       var weigthBoxes = values.weigth * numBoxes;
-      const unitsBoxes = values.units * numBoxes;
+      
       if (weigthBoxes > parseInt(weigthMax)) {
         for (
           var i = weigthBoxes;
@@ -118,6 +118,7 @@ const resultUniqueBox =
         }
         weigthBoxes = values.weigth * numBoxes;
       }
+      const unitsBoxes = values.units * numBoxes;
       const volumenBox = values.height * values.width * values.long;
       const percent = ((volumenBox * numBoxes) / volumenContainer) * 100;
       const newBoxes = boxes.map((e: IBox): IBox => {
@@ -182,7 +183,7 @@ const resultMultiplesBoxes =
       }
       //verifica si queda espacio en el contenedor
       if (volumenBoxes < volumenContainer && weigthBoxesMax < weigthMax) {
-        const unitsBoxes = values.quantity * numBoxes;
+        const unitsBoxes = values.units * numBoxes;
         const percent = (volumenNumBox / volumenContainer) * 100;
         const percentWeigth = (weigthBoxesMax / weigthMax) * 100;
         var percentVolumen = 0;

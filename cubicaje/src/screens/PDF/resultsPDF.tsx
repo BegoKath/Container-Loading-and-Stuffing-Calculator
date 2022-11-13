@@ -74,14 +74,14 @@ export const MyDocument = ({ contenedor, boxes }: Props) => {
             }}
           >
             <Text style={{ marginBottom: 5 }}>
-              {"Ancho: " + e.width + " mm"}
+              {"Ancho: " + e.width + " cm"}
             </Text>
             <Text style={{ marginBottom: 5 }}>
-              {"Alto: " + e.height + " mm"}
+              {"Alto: " + e.height + " cm"}
             </Text>
 
             <Text style={{ marginBottom: 5 }}>
-              {"Largo: " + e.long + " mm"}
+              {"Largo: " + e.long + " cm"}
             </Text>
             <Text style={{ marginBottom: 5 }}>
               {"Peso Máximo: " + e.weigth + " kg"}
@@ -103,7 +103,7 @@ export const MyDocument = ({ contenedor, boxes }: Props) => {
             {"Unidades: " + e.result.units}
           </Text>
           <Text style={{ marginBottom: 5 }}>
-            {"Peso Bruto: " + e.result.weightMax}
+            {"Peso Bruto: " + e.result.weightMax+" Kg"}
           </Text>
         </View>
       </View>:<></>
@@ -134,15 +134,15 @@ export const MyDocument = ({ contenedor, boxes }: Props) => {
             >
               <View style={{ flexDirection: "column" }}>
                 <Text style={{ marginBottom: 5 }}>
-                  {"Ancho: " + contenedor.width + " mm"}
+                  {"Ancho: " + contenedor.width + " cm"}
                 </Text>
                 <Text style={{ marginBottom: 5 }}>
-                  {"Alto: " + contenedor.heigth + " mm"}
+                  {"Alto: " + contenedor.heigth + " cm"}
                 </Text>
               </View>
               <View style={{ flexDirection: "column" }}>
                 <Text style={{ marginBottom: 5 }}>
-                  {"Largo: " + contenedor.long + " mm"}
+                  {"Largo: " + contenedor.long + " cm"}
                 </Text>
                 <Text style={{ marginBottom: 5 }}>
                   {"Peso Máximo: " + contenedor.weigthMax + " kg"}

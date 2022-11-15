@@ -130,7 +130,7 @@ const resultUniqueBox =
             weigth: values.weigth,
             long: values.long,
             quantity: values.quantity,
-            update: values.update,
+            update: true,
             units: values.units,
             result: {
               numboxes: numBoxes,

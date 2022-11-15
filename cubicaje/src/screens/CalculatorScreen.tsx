@@ -58,35 +58,34 @@ export const CalculatorScreen = () => {
   const hoy = new Date(tiempoTranscurrido);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const changeContainer = () => {    
-      if (typeContainer === "DRY") {
-        showTransportContainer(false);
-        if (measureContainer === "20FT") {
-          changeContainerDry20FT();
-        }
-        if (measureContainer === "40FT") {
-          changeContainerDry40FT();
-        }
-        if (measureContainer === "40HQ") {
-          changeContainerDry40HQ();
-        }
+  const changeContainer = () => {
+    if (typeContainer === "DRY") {
+      showTransportContainer(false);
+      if (measureContainer === "20FT") {
+        changeContainerDry20FT();
       }
-      if (typeContainer === "REFFER") {
-        showTransportContainer(false);
-        if (measureContainer === "20FT") {
-          changeContainerReffer20FT();
-        }
-        if (measureContainer === "40FT") {
-          changeContainerReffer40FT();
-        }
-        if (measureContainer === "40HQ") {
-          changeContainerReffer40HQ();
-        }
+      if (measureContainer === "40FT") {
+        changeContainerDry40FT();
       }
-      if (typeContainer === "TRANSPORT") {
-        showTransportContainer(true);
+      if (measureContainer === "40HQ") {
+        changeContainerDry40HQ();
       }
-    
+    }
+    if (typeContainer === "REFFER") {
+      showTransportContainer(false);
+      if (measureContainer === "20FT") {
+        changeContainerReffer20FT();
+      }
+      if (measureContainer === "40FT") {
+        changeContainerReffer40FT();
+      }
+      if (measureContainer === "40HQ") {
+        changeContainerReffer40HQ();
+      }
+    }
+    if (typeContainer === "TRANSPORT") {
+      showTransportContainer(true);
+    }
   };
   const handleChangeChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
@@ -95,6 +94,7 @@ export const CalculatorScreen = () => {
         Alert.advertising();
         setChecked(false);
       } else {
+        resetStateBoxes();
         showWindowGold(true);
       }
     } else {
@@ -178,8 +178,8 @@ export const CalculatorScreen = () => {
       </div>
     );
   });
-  const changeType=(type:string,value:string)=>{
-    if(type==="tipo"){
+  const changeType = (type: string, value: string) => {
+    if (type === "tipo") {
       if (boxes.length > 1) {
         Alert.mySwal
           .fire({
@@ -189,18 +189,18 @@ export const CalculatorScreen = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Eliminar",
-            denyButtonText:"Cancelar"
+            cancelButtonText:"Cancelar",
           })
           .then((result) => {
             if (result.isConfirmed) {
               resetStateBoxes();
               setTypeContainer(value);
             }
-          });       
-      }else{
+          });
+      } else {
         setTypeContainer(value);
       }
-    }else if(type==="medidas"){
+    } else if (type === "medidas") {
       if (boxes.length > 1) {
         Alert.mySwal
           .fire({
@@ -210,19 +210,19 @@ export const CalculatorScreen = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Eliminar",
-            denyButtonText:"Cancelar"
+            cancelButtonText:"Cancelar",
           })
           .then((result) => {
             if (result.isConfirmed) {
               resetStateBoxes();
               setMeasureContainer(value);
             }
-          });       
-      }else{
+          });
+      } else {
         setMeasureContainer(value);
       }
     }
-  }
+  };
   //desplega la información de los contenedores
   function InfoContainers() {
     return (
@@ -289,7 +289,7 @@ export const CalculatorScreen = () => {
               className=" d-flex align-items-center text-center text-white"
               style={{ fontSize: "15px" }}
             >
-              GOLD <FaStar className="m-1" />
+              PLAN GOLD <FaStar className="m-1" />
             </div>
           )}
 
@@ -318,7 +318,7 @@ export const CalculatorScreen = () => {
                   type="radio"
                   name="type"
                   onClick={() => {
-                    changeType("tipo","DRY");
+                    changeType("tipo", "DRY");
                   }}
                   defaultChecked
                 />
@@ -346,8 +346,7 @@ export const CalculatorScreen = () => {
                   type="radio"
                   name="type"
                   onClick={() => {
-                    changeType("tipo","REFFER");
-                   
+                    changeType("tipo", "REFFER");
                   }}
                 />
                 <p
@@ -374,8 +373,7 @@ export const CalculatorScreen = () => {
                   type="radio"
                   name="type"
                   onClick={() => {
-                    
-                    changeType("tipo","TRANSPORT");
+                    changeType("tipo", "TRANSPORT");
                   }}
                 />
                 <p
@@ -417,8 +415,8 @@ export const CalculatorScreen = () => {
                   <input
                     type="radio"
                     name="measure"
-                    onClick={() => {                      
-                      changeType("medidas","20FT");
+                    onClick={() => {
+                      changeType("medidas", "20FT");
                     }}
                     defaultChecked
                   />
@@ -427,7 +425,7 @@ export const CalculatorScreen = () => {
                     type="radio"
                     name="measure"
                     onClick={() => {
-                      changeType("medidas","40FT");                      
+                      changeType("medidas", "40FT");
                     }}
                   />
                   <p className="m-1">40 FT</p>
@@ -435,7 +433,7 @@ export const CalculatorScreen = () => {
                     type="radio"
                     name="measure"
                     onClick={() => {
-                      changeType("medidas","40HQ");                      
+                      changeType("medidas", "40HQ");
                     }}
                   />
                   <p className="m-1">40 HQ</p>
@@ -475,6 +473,37 @@ export const CalculatorScreen = () => {
               Resultados
             </p>
             {mode === "GOLD" ? (
+              <Button
+                onClick={() => {
+                  Alert.mySwal
+                    .fire({
+                      title:
+                        "¿Seguro que quieres perder información de la carga?",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#3085d6",
+                      cancelButtonColor: "#d33",
+                      confirmButtonText: "Eliminar",
+                      cancelButtonText:"Cancelar",
+                    })
+                    .then((result) => {
+                      if (result.isConfirmed) {
+                        resetStateBoxes();                      
+                      }
+                    });
+                }}
+                className="m-2"
+                style={{
+                  backgroundColor: "#465489",
+                  border: "1px solid white",
+                }}
+              >
+                Nuevo Cálculo
+              </Button>
+            ) : (
+              <></>
+            )}
+            {mode === "GOLD" ? (
               <PDFDownloadLink
                 document={
                   <MyDocument
@@ -487,6 +516,8 @@ export const CalculatorScreen = () => {
                       weigthMax: weigthMax,
                     }}
                     boxes={boxes}
+                    percentVolumen={percentVolumen}
+                    percentWeigth={percentWeigth}
                   />
                 }
                 fileName={hoy.toLocaleDateString()}

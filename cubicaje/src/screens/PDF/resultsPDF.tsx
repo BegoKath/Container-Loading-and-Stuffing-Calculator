@@ -51,13 +51,19 @@ const styles = StyleSheet.create({
     fontSize: 12,
     padding: 10,
   },
+  sectionPercent:{
+    display:"flex",
+    flexDirection:"row"
+  }
 });
 interface Props {
   contenedor: IContainerState;
   boxes: IBox[];
+  percentVolumen:number;
+  percentWeigth:number;
 }
 // Create Document Component
-export const MyDocument = ({ contenedor, boxes }: Props) => {
+export const MyDocument = ({ contenedor, boxes, percentVolumen,percentWeigth }: Props) => {
   const datos = boxes.map((e: IBox) => {
     return (
       e.update?
@@ -118,7 +124,7 @@ export const MyDocument = ({ contenedor, boxes }: Props) => {
         </View>
         <View style={styles.sectionTitle}>
           <Text style={{ fontSize: 20 }}>Cubicaje de contenedores</Text>
-          <Text style={{ margin: "5px", fontSize: 15 }}> Calculadora</Text>
+          <Text style={{ margin: "5px", fontSize: 15 }}>Cubicador Aduanero</Text>
         </View>
         <View style={styles.sectionContainer}>
           <Text style={{ fontSize: 15, color: "#465489" }}>Resultados</Text>
@@ -150,6 +156,16 @@ export const MyDocument = ({ contenedor, boxes }: Props) => {
               </View>
             </View>
           </View>
+          <View style={styles.sectionPercent}>
+          <Text style={{ fontSize: 13, color: "#000",textAlign:"center" }}>{"Porcentaje en volumen: "}</Text>
+          <Text style={{ fontSize: 13, color: "#2EFE2E",textAlign:"center" }}>{percentVolumen}</Text>
+          </View>
+          <View style={styles.sectionPercent}>
+          <Text style={{ fontSize: 13, color: "#000",textAlign:"center" }}>{"Porcentaje en peso: "}</Text>
+          <Text style={{ fontSize: 13, color: "#2EFE2E",textAlign:"center" }}>{percentWeigth}</Text>
+          </View>
+          
+
           <Text style={{ fontSize: 13, color: "#465489",textAlign:"center" }}>Carga</Text>
           {datos}
         </View>

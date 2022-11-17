@@ -67,5 +67,9 @@
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1"
+  },
+  "engines":{
+    "node":"v16.16.0",
+    "npm":"8.14.0"
   }
 }

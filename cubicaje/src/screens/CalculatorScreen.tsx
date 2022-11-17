@@ -472,7 +472,7 @@ export const CalculatorScreen = () => {
             <p style={{ fontSize: "20px", marginTop: "10px", height: "20px" }}>
               Resultados
             </p>
-            {mode === "GOLD" ? (
+           
               <Button
                 onClick={() => {
                   Alert.mySwal
@@ -500,9 +500,7 @@ export const CalculatorScreen = () => {
               >
                 Nuevo Cálculo
               </Button>
-            ) : (
-              <></>
-            )}
+            
             {mode === "GOLD" ? (
               <PDFDownloadLink
                 document={

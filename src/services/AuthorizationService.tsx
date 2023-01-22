@@ -8,8 +8,8 @@ export class AuthorizationService {
     code: string;
     codeVerifier:string;
   }): Promise<any> => {
-    const redirect=`http://localhost:3000/gold`;
-    const url = "http://185.197.194.217/o/token/";
+    const redirect=`${process.env.REACT_APP_URL_LOCAL}/gold`;
+    const url = `${process.env.REACT_APP_AUTH_URL}/o/token/`;
     const body = {
       client_id: props.id,
       code: props.code,
@@ -20,7 +20,7 @@ export class AuthorizationService {
     return await Api.post(url, body);
   };
   static getCodes =async ():Promise <Codes>=>{
-    const url ='http://liquidadorbusinesshy.com/security/v1/challenge';
+    const url =`${process.env.REACT_APP_AUTH_URL}/security/v1/challenge`;
     return Api.get(url);
   }
 }

@@ -4,7 +4,6 @@ import container1 from "../assets/container1.png";
 import container2 from "../assets/container2.png";
 import transport from "../assets/transport.png";
 import logo from "../assets/logo.png";
-
 import { useContainer } from "../hooks/useContainer";
 import { useEffect, useState } from "react";
 import { useResult } from "../hooks/useResult";
@@ -131,7 +130,7 @@ export const CalculatorScreen = () => {
         } else {
           const res = await getCodes();
           localStorage.setItem(Keys.CV, res.verifier);
-          window.location.href = `http://185.197.194.217/o/authorize/?client_id=${clientID}&response_type=${response_type}&code_challenge=${res.challege}&code_challenge_method=${code_challenge_method}`;
+          window.location.href = `${process.env.REACT_APP_AUTH_URL}/o/authorize/?client_id=${clientID}&response_type=${response_type}&code_challenge=${res.challege}&code_challenge_method=${code_challenge_method}`;
         }
       }
     } else {
@@ -436,7 +435,7 @@ export const CalculatorScreen = () => {
                       changeType("medidas", "40HQ");
                     }}
                   />
-                  <p className="m-1">40 HQ</p>
+                  <p className="m-1">40 HC</p>
                 </>
               )}
             </div>

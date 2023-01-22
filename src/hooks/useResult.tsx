@@ -30,6 +30,7 @@ export const useResult = () => {
   const getCodes =async ():Promise<Codes>=> {
     const res = await AuthorizationService.getCodes();
     const codes = res as Codes;
+    console.log(codes)
     return codes;
   };
     const setCodeVerifier = ():string=>{

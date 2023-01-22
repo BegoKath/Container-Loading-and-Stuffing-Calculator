@@ -266,15 +266,14 @@ const getAuthorization =
       id,
       code,
       codeVerifier,
-    });
+    });   
     if (res === "Error") {
       await Alert.showError("Error");
-      window.location.href = "http://localhost:3000/gold";
+      window.location.href = `${process.env.REACT_APP_URL_LOCAL}/gold`;
       return;
     }
-    if (res.access_token) {
-      
-      window.location.href = `http://localhost:3000/gold?gold=${res.access_token}`;
+    if (res.access_token) {      
+      window.location.href = `${process.env.REACT_APP_URL_LOCAL}/gold?gold=${res.access_token}`;
     }
   };
 
